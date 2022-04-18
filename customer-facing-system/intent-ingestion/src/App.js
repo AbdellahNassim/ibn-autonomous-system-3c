@@ -1,6 +1,10 @@
-import logo from './logo.svg';
+import logo from './assets/logo.svg';
 import './App.css';
 
+/**
+ *
+ * @return {*} App component
+ */
 function App() {
   return (
     <div className="App">
@@ -10,7 +14,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <a
-          className="App-link"
+          className="App-link bg-orange-500"
           href="https://reactjs.org"
           target="_blank"
           rel="noopener noreferrer"
