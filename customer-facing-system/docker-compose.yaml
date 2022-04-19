@@ -1,0 +1,29 @@
+version: "3.5"
+services:
+  intent-ingestion:
+    build: ./intent-ingestion
+    ports:
+      - "3000:3000"
+    networks:
+      - ingestion-network
+
+  intent-recognition:
+    build: ./intent-recognition-engine
+    ports:
+      - "5005:5005"
+    networks:
+      - recognition-network
+
+  intent-recognition-actions:
+    container_name: actions_server
+    build: ./intent-recognition-engine/actions
+    volumes:
+      - "./intent-recognition-engine/actions:/app/actions"
+    ports:
+      - "5055:5055"
+    networks:
+      - recognition-network
+
+networks:
+  ingestion-network:
+  recognition-network:
