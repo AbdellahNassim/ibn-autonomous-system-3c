@@ -1,0 +1,39 @@
+version: "3.6"
+services:
+  api-gateway:
+    build:
+      context: ./api-gateway
+    ports:
+      - "8080:3000"
+    networks:
+      - internal_network
+      - default
+
+  data_contextualize:
+    build:
+      context: ./data-contextualize
+    networks:
+      - internal_network
+
+  decision_maker:
+    build:
+      context: ./intent-decision-maker
+    networks:
+      - internal_network
+
+  intent_monitor:
+    build:
+      context: ./intent-monitor
+    networks:
+      - internal_network
+  policy_generator:
+    build:
+      context: ./policy-generator
+    networks:
+      - internal_network
+
+networks:
+  internal_network:
+  default:
+    name: proxy_frontend
+    driver: bridge
