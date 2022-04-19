@@ -1,25 +1,41 @@
 const ROUTES = [
   {
-    url: '/free',
-    rateLimit: {
-      windowMs: 15 * 60 * 1000,
-      max: 5,
-    },
+    url: '/decision_maker',
     proxy: {
-      target: 'https://www.google.com',
+      target: 'http://decision_maker',
       changeOrigin: true,
       pathRewrite: {
-        [`^/free`]: '',
+        [`^/decision_maker`]: '',
       },
     },
   },
   {
-    url: '/premium',
+    url: '/data_contextualize',
     proxy: {
-      target: 'https://www.google.com',
+      target: 'http://data_contextualize',
       changeOrigin: true,
       pathRewrite: {
-        [`^/premium`]: '',
+        [`^/data_contextualize`]: '',
+      },
+    },
+  },
+  {
+    url: '/intent_monitor',
+    proxy: {
+      target: 'http://intent_monitor',
+      changeOrigin: true,
+      pathRewrite: {
+        [`^/intent_monitor`]: '',
+      },
+    },
+  },
+  {
+    url: '/policy_generator',
+    proxy: {
+      target: 'http://policy_generator',
+      changeOrigin: true,
+      pathRewrite: {
+        [`^/policy_generator`]: '',
       },
     },
   },
