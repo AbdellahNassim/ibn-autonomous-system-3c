@@ -11,5 +11,6 @@ COPY ./ ./
 # Install dependencies 
 RUN npm i
 
+EXPOSE 3000
 # Launch the react application
 CMD ["npm", "run", "start"]

@@ -4,12 +4,21 @@ FROM rasa/rasa-sdk:latest
 WORKDIR /app
 
 # COPY requirements 
-COPY ../requirements.txt /app/
+COPY ./requirements.txt /app/
 
-# Install dependencies 
-RUN pip install --verbose -r requirements
 
-# Expose the port 
+
+
+USER root
+
+# Install requirements 
+RUN pip install --verbose -r requirements.txt
+
+# COPY all the working directory containing actions
+COPY . /app/
+
+# Expose the port of the custom server 
 EXPOSE 5055
-# Launch the actions server 
-CMD ["rasa","run", "actions"]
+
+# Switch back to user
+USER 1001
