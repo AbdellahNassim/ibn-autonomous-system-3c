@@ -27,6 +27,56 @@ nlu:
       - whats up brainy
       - whats up brainy?
 
+  - intent: out_of_scope
+    examples: |
+      - what is the square root of 5
+      - I want to know the weather
+      - what is the meaning of life.
+      - Fridge Isn't Running
+      - my tv isn't working
+      - I want a pizza
+      - my washing machine isn't working
+      - what year is it
+      - order a pizza
+      - I want to order a pizza
+      - what is the weather today
+      - what is the weather
+      - how old are you?
+      - add two plus two
+      - how about the forecast
+
+  - intent: bot_challenge
+    examples: |
+      - are you a bot?
+      - are you a human?
+      - am I talking to a bot?
+      - am I talking to a human?
+      - you are a bot right
+      - aren't you a bot
+      - Are you a bot?
+      - are you a BOT
+      - are you a chatbot
+      - are you a real bot?
+      - are you a robot
+      - are you ai
+      - are you artificial
+      - are you artificial intelligence
+      - are you bot
+      - are you bot?
+      - are you real
+      - are you really a bot
+      - are you robot
+      - are you sure that you're a bot?
+      - bot?
+      - oh are you chatbot?
+      - tell me, are you a bot?
+      - what are you, a bot?
+      - you are a robot
+      - who are you ?
+      - you are ai
+      - you are chatbot
+      - you're a bot
+
   - intent: goodbye
     examples: |
       - cu
@@ -71,3 +121,37 @@ nlu:
       - deny 
       - definitely not
       - never
+
+  - intent: request_service
+    examples: |
+      - I want a [video](service_type) service
+      - I want a [gaming](service_type) service
+      - I want to request a [video](service_type) service 
+      - I want to request a [gaming](service_type) service 
+      - I want to provision a [video](service_type) service 
+      - I want to provision a [gaming](service_type) service 
+      - Request [video](service_type) service
+      - Request [gaming](service_type) service
+      - [video](service_type) service 
+      - [gaming](service_type) service 
+      - I need a [video](service_type) service 
+      - I need a [gaming](service_type) service 
+      - need [video](service_type) service 
+      - need [gaming](service_type) service 
+      - wanna [video](service_type) service
+      - wanna [gaming](service_type) service
+      - new [video](service_type) service 
+      - new [gaming](service_type) service 
+      - deploy [video](service_type) service
+      - deploy [gaming](service_type) service
+      - provision a [video](service_type) service 
+      - provision a [gaming](service_type) service 
+      - I want to buy a [video](service_type) service
+      - I want to buy a [gaming](service_type) service 
+      - buy [video](service_type) service 
+      - buy [gaming](service_type) service 
+      - buy a [video](service_type) service
+      - buy a [gaming](service_type) service
+      - I want to [watch]{"entity":"service_type","value":"video"} something
+      - I want to watch a [video](service_type)
+      - I want to play a [game]{"entity":"service_type","value":"gaming"}

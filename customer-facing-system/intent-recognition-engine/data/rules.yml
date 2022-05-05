@@ -5,3 +5,11 @@ rules:
     steps:
       - intent: goodbye
       - action: utter_goodbye
+  - rule: Reply to the bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
+  - rule: Reply when out of scope
+    steps:
+      - intent: out_of_scope
+      - action: utter_dont_understand

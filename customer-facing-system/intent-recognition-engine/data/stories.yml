@@ -1,7 +1,44 @@
 version: "3.1"
 
 stories:
-  - story: happy path
+  # This is in case the user requests a video service
+  - story: Request video service
     steps:
       - intent: greet
       - action: utter_greet
+      - intent: request_service
+      - slot_was_set:
+          - service: video
+      - action: utter_confirm_service
+      - checkpoint: check_user_confirmation
+
+  # This is in case the user requests a gamin service
+  - story: Request gaming service
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_service
+      - slot_was_set:
+          - service: gaming
+      - action: utter_confirm_service
+      - checkpoint: check_user_confirmation
+
+  # This is in case the user request a service without specifying the type
+  - story: Request service without specifying type of service
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_service
+      - action: utter_request_service
+
+  - story: User affirmed the requested service
+    steps:
+      - checkpoint: check_user_confirmation
+      - intent: affirm
+      - action: utter_service_will_be_deployed
+
+  - story: User denies the inferred service
+    steps:
+      - checkpoint: check_user_confirmation
+      - intent: deny
+      - action: utter_request_service
