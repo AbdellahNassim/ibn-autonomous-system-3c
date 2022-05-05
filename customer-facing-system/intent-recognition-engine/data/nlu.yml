@@ -16,6 +16,16 @@ nlu:
       - goodmorning
       - goodevening
       - good afternoon
+      - hi brainy 
+      - hello brainy
+      - hola brainy
+      - good morning brainy 
+      - good evening brainy
+      - what is up?
+      - whats up
+      - Wasup 
+      - whats up brainy
+      - whats up brainy?
 
   - intent: goodbye
     examples: |
@@ -29,6 +39,10 @@ nlu:
       - see you around
       - bye bye
       - see you later
+      - goodbye brainy 
+      - see you later brainy 
+      - good night brainy 
+      - bye brainy
 
   - intent: affirm
     examples: |
@@ -38,6 +52,11 @@ nlu:
       - of course
       - that sounds good
       - correct
+      - ok
+      - yep 
+      - yeah sure
+      - yup 
+      - yes please
 
   - intent: deny
     examples: |
@@ -48,3 +67,7 @@ nlu:
       - don't like that
       - no way
       - not really
+      - decline
+      - deny 
+      - definitely not
+      - never
