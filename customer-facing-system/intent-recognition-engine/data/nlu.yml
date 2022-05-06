@@ -4,6 +4,7 @@ nlu:
   - intent: greet
     examples: |
       - hey
+      - hy
       - hello
       - hi
       - hello there
@@ -107,6 +108,11 @@ nlu:
       - yeah sure
       - yup 
       - yes please
+      - Yeah That is it 
+      - Yes that is what i want 
+      - Yes 
+      - Well yeah 
+      - Obviously yes
 
   - intent: deny
     examples: |
@@ -133,7 +139,9 @@ nlu:
       - Request [video](service_type) service
       - Request [gaming](service_type) service
       - [video](service_type) service 
-      - [gaming](service_type) service 
+      - [gaming](service_type) service
+      - [video](service_type)
+      - [gaming](service_type)
       - I need a [video](service_type) service 
       - I need a [gaming](service_type) service 
       - need [video](service_type) service 
@@ -155,3 +163,25 @@ nlu:
       - I want to [watch]{"entity":"service_type","value":"video"} something
       - I want to watch a [video](service_type)
       - I want to play a [game]{"entity":"service_type","value":"gaming"}
+
+  - intent: inform_latency
+    examples: |
+      - I want [20](latency) ms of latency
+      - I want [10](latency) ms of latency
+      - I need [10](latency) ms 
+      - I need [20](latency) ms 
+      - Just [20](latency) ms
+      - Just [10](latency) ms
+      - [20](latency)
+      - [10](latency)
+      - [20](latency)ms
+      - [10](latency)ms
+
+  - intent: inform_resolution
+    examples: |
+      - I want a resolution of [640x480](resolution)
+      - I want a resolution of [1280x720](resolution)
+      - I want a resolution of [1920x1080](resolution)
+      - [640x480](resolution)
+      - [1280x720](resolution)
+      - [1920x1080](resolution)

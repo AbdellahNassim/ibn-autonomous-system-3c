@@ -7,27 +7,31 @@ intents:
   - deny
   - bot_challenge
   - request_service
-  - request_video_service
-  - request_gaming_service
+  - out_of_scope
+  - inform_latency
+  - inform_resolution
 
 responses:
   utter_greet:
-    - text: "Hey! How can I help you?"
-
-  utter_did_that_help:
-    - text: "Did that help you?"
+    - text: "Hey I'm Brainy your assistant! How can I help you ?"
 
   utter_request_service:
-    - text: "What type of service you want?"
+    - text: "What type of service you want ?"
 
   utter_confirm_service:
-    - text: "You have requested a {service} Service, do you confirm?"
+    - text: "You have requested a {service} Service, do you want to customize it ?"
+
+  utter_ask_latency:
+    - text: "What is the minimum amount of latency you want? (ms)"
+
+  utter_ask_resolution:
+    - text: "What is the required video resolution you want?"
 
   utter_dont_understand:
     - text: "I don't understand what you want."
 
   utter_service_will_be_deployed:
-    - text: "Thank you, the requested service will be deployed"
+    - text: "Everything set, the requested service will be deployed"
 
   utter_goodbye:
     - text: "Bye"
@@ -38,6 +42,8 @@ responses:
 # Here we define the entities that our NLU will extract from text
 entities:
   - service_type
+  - latency
+  - resolution
 
 slots:
   # We will use this slot to save the requested service name
@@ -50,6 +56,25 @@ slots:
     mappings:
       - type: from_entity
         entity: service_type
+  # Latency is one of the qos parameters of the service
+  latency:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: latency
+  # Resolution is one of the qos parameters of the video service
+  resolution:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: resolution
+
+# These are the forms that will help us extract the required parameters of each service
+forms:
+  video_service_params_form:
+    required_slots:
+      - latency
+      - resolution
 
 # Here are the custom actions that will be executed
 actions:
