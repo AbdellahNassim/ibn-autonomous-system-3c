@@ -1,0 +1,22 @@
+[
+  {
+    "href": "#home",
+    "title": "Home"
+  },
+  {
+    "href": "#features",
+    "title": "Features"
+  },
+  {
+    "href": "#description",
+    "title": "Description"
+  },
+  {
+    "href": "#team",
+    "title": "Team"
+  },
+  {
+    "href": "#contact",
+    "title": "Contact"
+  }
+]

@@ -1,5 +1,6 @@
-import logo from './assets/logo.svg';
-import './App.css';
+import HeroSection from './components/HeroSection';
+import Layout from './components/layout';
+import WebChatWidget from './components/WebChat';
 
 /**
  *
@@ -7,22 +8,10 @@ import './App.css';
  */
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link bg-orange-500"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <HeroSection></HeroSection>
+      <WebChatWidget></WebChatWidget>
+    </Layout>
   );
 }
 
