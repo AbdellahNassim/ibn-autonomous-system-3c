@@ -1,13 +1,28 @@
 version: "3.1"
 
 rules:
+  - rule: Say goodbye anytime the user says goodbye
+    steps:
+      - intent: goodbye
+      - action: utter_goodbye
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
+  - rule: Reply to the bot challenge
+    steps:
+      - intent: bot_challenge
+      - action: utter_iamabot
 
-- rule: Say 'I am a bot' anytime the user challenges
-  steps:
-  - intent: bot_challenge
-  - action: utter_iamabot
+  - rule: Reply when out of scope
+    steps:
+      - intent: out_of_scope
+      - action: utter_dont_understand
+
+  # This rule will just desactivate the form and verify that all slots are filled in
+  - rule: Submit video service form
+    condition:
+      - active_loop: video_service_params_form
+    steps:
+      - action: video_service_params_form
+      - active_loop: null
+      - slot_was_set:
+          - requested_slot: null
+      - action: utter_service_will_be_deployed

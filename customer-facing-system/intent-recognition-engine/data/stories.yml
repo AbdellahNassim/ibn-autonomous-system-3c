@@ -1,29 +1,52 @@
 version: "3.1"
 
 stories:
-  - story: happy path
+  # This is in case the user request a service without specifying the type
+  - story: Request service without specifying type of service
     steps:
       - intent: greet
-      - action: action_hello_world
-      - intent: mood_great
-      - action: utter_happy
+      - action: utter_greet
+      - intent: request_service
+      - action: utter_request_service
 
-  # - story: sad path 1
-  #   steps:
-  #     - intent: greet
-  #     - action: utter_greet
-  #     - intent: mood_unhappy
-  #     - action: utter_cheer_up
-  #     - action: utter_did_that_help
-  #     - intent: affirm
-  #     - action: utter_happy
+  # This is in case the user requests a video service
+  - story: Request video service
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_service
+        entities:
+          - service_type: video
+      - slot_was_set:
+          - service: video
+      - action: utter_confirm_service
+      - checkpoint: user_customization
 
-  # - story: sad path 2
-  #   steps:
-  #     - intent: greet
-  #     - action: utter_greet
-  #     - intent: mood_unhappy
-  #     - action: utter_cheer_up
-  #     - action: utter_did_that_help
-  #     - intent: deny
-  #     - action: utter_goodbye
+  # When the user wants to customize the service's parameters
+  - story: User customize video service parameters
+    steps:
+      - checkpoint: user_customization
+      - intent: affirm
+      - slot_was_set:
+          - service: video
+      - action: video_service_params_form
+      - active_loop: video_service_params_form
+
+  # This is in case the user requests a gaming service
+  - story: Request gaming service
+    steps:
+      - intent: greet
+      - action: utter_greet
+      - intent: request_service
+        entities:
+          - service_type: gaming
+      - slot_was_set:
+          - service: gaming
+      - action: utter_confirm_service
+      - checkpoint: user_customization
+
+  - story: User don't customize service
+    steps:
+      - checkpoint: user_customization
+      - intent: deny
+      - action: utter_service_will_be_deployed

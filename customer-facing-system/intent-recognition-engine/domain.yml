@@ -5,32 +5,81 @@ intents:
   - goodbye
   - affirm
   - deny
-  - mood_great
-  - mood_unhappy
   - bot_challenge
+  - request_service
+  - out_of_scope
+  - inform_latency
+  - inform_resolution
 
 responses:
   utter_greet:
-    - text: "Hey! How are you?"
+    - text: "Hey I'm Brainy your assistant! How can I help you ?"
 
-  utter_cheer_up:
-    - text: "Here is something to cheer you up:"
-      image: "https://i.imgur.com/nGF1K8f.jpg"
+  utter_request_service:
+    - text: "What type of service you want ?"
 
-  utter_did_that_help:
-    - text: "Did that help you?"
+  utter_confirm_service:
+    - text: "You have requested a {service} Service, do you want to customize it ?"
 
-  utter_happy:
-    - text: "Great, carry on!"
+  utter_ask_latency:
+    - text: "What is the minimum amount of latency you want? (ms)"
+
+  utter_ask_resolution:
+    - text: "What is the required video resolution you want?"
+
+  utter_dont_understand:
+    - text: "I don't understand what you want."
+
+  utter_service_will_be_deployed:
+    - text: "Everything set, the requested service will be deployed"
 
   utter_goodbye:
     - text: "Bye"
 
   utter_iamabot:
-    - text: "I am a bot, powered by Rasa."
+    - text: "I am Brainy and I'm here to help you."
 
+# Here we define the entities that our NLU will extract from text
+entities:
+  - service_type
+  - latency
+  - resolution
+
+slots:
+  # We will use this slot to save the requested service name
+  # To be able to forward it to the action server afterhand
+  service:
+    type: text
+    # This slot will not influence the conversation
+    # we will use it only to store the selected service
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: service_type
+  # Latency is one of the qos parameters of the service
+  latency:
+    type: float
+    mappings:
+      - type: from_entity
+        entity: latency
+  # Resolution is one of the qos parameters of the video service
+  resolution:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: resolution
+
+# These are the forms that will help us extract the required parameters of each service
+forms:
+  video_service_params_form:
+    required_slots:
+      - latency
+      - resolution
+
+# Here are the custom actions that will be executed
 actions:
   - action_hello_world
+
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
