@@ -5,7 +5,7 @@ const HeroSection = ()=>{
     items-center justify-center h-screen bg-black-lighter">
       <div className="flex flex-col w-6/12 text-center">
         <h1 className="text-white-lighter text-7xl font-semibold">
-            Your story starts with us.
+            Your story starts with an intent.
         </h1>
         <p className="text-white-lighter  text-lg font-thin mt-6">
             SCORING is a next generation platform that
