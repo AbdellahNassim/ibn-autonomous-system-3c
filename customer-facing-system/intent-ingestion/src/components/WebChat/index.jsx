@@ -1,6 +1,7 @@
 import Widget from 'rasa-webchat';
 import '../../index.css';
 import BrainyPdP from '../../assets/BrainyPdp.png';
+import StartIcon from '../../assets/shuttle.png';
 const WebChatWidget = () => {
   return (
     <div id="widget">
@@ -13,6 +14,8 @@ const WebChatWidget = () => {
         embedded={false}
         profileAvatar={BrainyPdP}
         showMessageDate={true}
+        openLauncherImage={StartIcon}
+        inputTextFieldHint={'I want a video service '}
       />
     </div>
   );
