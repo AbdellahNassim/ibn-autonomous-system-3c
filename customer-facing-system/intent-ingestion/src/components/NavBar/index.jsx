@@ -48,8 +48,8 @@ const NavBar = ()=>{
                     id={`${index}`}
                     href={item.href}
                     key={index}
-                    className="text-white-lighter text-base
-                     md:text-lg lg:text-xl hover:text-black-default"
+                    className="text-white-lighter text-lg
+                     md:text-xl lg:text-2xl hover:text-black-default"
                   >
                     {item.title}
                   </a>

@@ -15,3 +15,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+#widget {
+  background-color: #fe0256;
+}
+#widget .rw-open-launcher {
+  width: 92%;
+  padding-left: 2px;
+  padding-bottom: 6px;
+}
+#widget .rw-launcher {
+  background-color: #0495fe;
+}
+#widget .rw-header {
+  background-color: #0495fe;
+}
