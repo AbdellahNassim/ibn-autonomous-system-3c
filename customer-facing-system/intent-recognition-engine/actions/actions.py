@@ -11,17 +11,27 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-
-
-class ActionHelloWorld(Action):
-
+import os 
+from .utils import setup
+class ActionProcessIntent(Action):
+    """
+        This class is an action that will be executed once the intent has been identified
+        It gets the extracted entities and compose an intent and then save it. 
+    """
+    
     def name(self) -> Text:
-        return "action_hello_world"
+        return "action_process_intent"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
+        
+        # get logger
+        logger = setup()
+        logger.error("Received Action to process intent")
+        print(tracker)
+        print(domain)
+        print(dispatcher)
         dispatcher.utter_message(text="Hello World!")
 
         return []

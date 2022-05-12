@@ -59,12 +59,14 @@ slots:
   # Latency is one of the qos parameters of the service
   latency:
     type: float
+    initial_value: 20
     mappings:
       - type: from_entity
         entity: latency
   # Resolution is one of the qos parameters of the video service
   resolution:
     type: text
+    initial_value: "1920x1080"
     mappings:
       - type: from_entity
         entity: resolution
@@ -78,7 +80,7 @@ forms:
 
 # Here are the custom actions that will be executed
 actions:
-  - action_hello_world
+  - action_process_intent
 
 session_config:
   session_expiration_time: 60

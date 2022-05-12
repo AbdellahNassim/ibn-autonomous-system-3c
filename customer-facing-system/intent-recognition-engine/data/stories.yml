@@ -45,8 +45,9 @@ stories:
       - action: utter_confirm_service
       - checkpoint: user_customization
 
+  # This is the case where the user don't want to customize the service
   - story: User don't customize service
     steps:
       - checkpoint: user_customization
       - intent: deny
-      - action: utter_service_will_be_deployed
+      - action: action_process_intent
