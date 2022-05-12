@@ -13,6 +13,7 @@ from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
 from .utils import setup
+from .database import create_connection
 class ActionProcessIntent(Action):
     """
         This class is an action that will be executed once the intent has been identified
@@ -29,9 +30,15 @@ class ActionProcessIntent(Action):
         # get logger
         logger = setup()
         logger.debug("Received Action to process intent")
-        print(tracker)
-        print(domain)
-        print(dispatcher)
+        # connect to database
+        create_connection(logger)
+        # get values from the tracker
+        user_intent = {
+            "service_type":tracker.get_slot('service'),
+            "latency":tracker.get_slot('latency'),
+            "resolution":tracker.get_slot('resolution')
+        }
+
         dispatcher.utter_message(text="Hello World!")
         return []
 class ActionCustomizeVideoService(Action):

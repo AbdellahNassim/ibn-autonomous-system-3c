@@ -18,8 +18,8 @@ def setup():
     # Check if we are in debug mode 
     isDebug = bool(os.environ["DEBUG"])
     # by default ignore debug logs
-    logging_level = "WARNING"
+    logging_level = logging.WARNING
     if isDebug:
-        logging_level = "NOTSET"
+        logging_level = logging.DEBUG
     log.setLevel(logging_level)
     return log
