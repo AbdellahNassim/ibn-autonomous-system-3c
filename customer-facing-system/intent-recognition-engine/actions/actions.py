@@ -11,7 +11,7 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-import os 
+from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
 from .utils import setup
 class ActionProcessIntent(Action):
     """
@@ -28,10 +28,30 @@ class ActionProcessIntent(Action):
         
         # get logger
         logger = setup()
-        logger.error("Received Action to process intent")
+        logger.debug("Received Action to process intent")
         print(tracker)
         print(domain)
         print(dispatcher)
         dispatcher.utter_message(text="Hello World!")
-
         return []
+class ActionCustomizeVideoService(Action):
+    """
+        This class is an action that just clean up the slots reserved for the 
+        video service parameters
+    """
+    
+    def name(self) -> Text:
+        return "action_customize_video_service"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        # Once the user wants to customize it's service we need to 
+        # reinitialize all the default values 
+        # reinitialize_latency = SlotSet("latency",None )
+        # reinitialize_resolution =  SlotSet("resolution",None) 
+        # Launch the form 
+        start_form = FollowupAction("video_service_params_form")
+        return [SlotSet("latency",None ),
+                SlotSet("resolution",None) ,
+                start_form ]

@@ -1,5 +1,4 @@
 version: "3.1"
-
 nlu:
   - intent: greet
     examples: |
@@ -17,17 +16,17 @@ nlu:
       - goodmorning
       - goodevening
       - good afternoon
-      - hi brainy 
+      - hi brainy
       - hello brainy
       - hola brainy
-      - good morning brainy 
+      - good morning brainy
       - good evening brainy
       - what is up?
       - whats up
-      - Wasup 
+      - Wasup
       - whats up brainy
       - whats up brainy?
-
+      - Hello
   - intent: out_of_scope
     examples: |
       - what is the square root of 5
@@ -45,7 +44,6 @@ nlu:
       - how old are you?
       - add two plus two
       - how about the forecast
-
   - intent: bot_challenge
     examples: |
       - are you a bot?
@@ -77,7 +75,6 @@ nlu:
       - you are ai
       - you are chatbot
       - you're a bot
-
   - intent: goodbye
     examples: |
       - cu
@@ -90,11 +87,10 @@ nlu:
       - see you around
       - bye bye
       - see you later
-      - goodbye brainy 
-      - see you later brainy 
-      - good night brainy 
+      - goodbye brainy
+      - see you later brainy
+      - good night brainy
       - bye brainy
-
   - intent: affirm
     examples: |
       - yes
@@ -104,16 +100,15 @@ nlu:
       - that sounds good
       - correct
       - ok
-      - yep 
+      - yep
       - yeah sure
-      - yup 
+      - yup
       - yes please
-      - Yeah That is it 
-      - Yes that is what i want 
-      - Yes 
-      - Well yeah 
+      - Yeah That is it
+      - Yes that is what i want
+      - Yes
+      - Well yeah
       - Obviously yes
-
   - intent: deny
     examples: |
       - no
@@ -124,59 +119,55 @@ nlu:
       - no way
       - not really
       - decline
-      - deny 
+      - deny
       - definitely not
-      - never
-
   - intent: request_service
     examples: |
       - I want a [video](service_type) service
       - I want a [gaming](service_type) service
-      - I want to request a [video](service_type) service 
-      - I want to request a [gaming](service_type) service 
-      - I want to provision a [video](service_type) service 
-      - I want to provision a [gaming](service_type) service 
+      - I want to request a [video](service_type) service
+      - I want to request a [gaming](service_type) service
+      - I want to provision a [video](service_type) service
+      - I want to provision a [gaming](service_type) service
       - Request [video](service_type) service
       - Request [gaming](service_type) service
-      - [video](service_type) service 
+      - [video](service_type) service
       - [gaming](service_type) service
       - [video](service_type)
       - [gaming](service_type)
-      - I need a [video](service_type) service 
-      - I need a [gaming](service_type) service 
-      - need [video](service_type) service 
-      - need [gaming](service_type) service 
+      - I need a [video](service_type) service
+      - I need a [gaming](service_type) service
+      - need [video](service_type) service
+      - need [gaming](service_type) service
       - wanna [video](service_type) service
       - wanna [gaming](service_type) service
-      - new [video](service_type) service 
-      - new [gaming](service_type) service 
+      - new [video](service_type) service
+      - new [gaming](service_type) service
       - deploy [video](service_type) service
       - deploy [gaming](service_type) service
-      - provision a [video](service_type) service 
-      - provision a [gaming](service_type) service 
+      - provision a [video](service_type) service
+      - provision a [gaming](service_type) service
       - I want to buy a [video](service_type) service
-      - I want to buy a [gaming](service_type) service 
-      - buy [video](service_type) service 
-      - buy [gaming](service_type) service 
+      - I want to buy a [gaming](service_type) service
+      - buy [video](service_type) service
+      - buy [gaming](service_type) service
       - buy a [video](service_type) service
       - buy a [gaming](service_type) service
-      - I want to [watch]{"entity":"service_type","value":"video"} something
+      - I want to [watch]{"entity": "service_type", "value": "video"} something
       - I want to watch a [video](service_type)
-      - I want to play a [game]{"entity":"service_type","value":"gaming"}
-
+      - I want to play a [game]{"entity": "service_type", "value": "gaming"}
   - intent: inform_latency
     examples: |
       - I want [20](latency) ms of latency
       - I want [10](latency) ms of latency
-      - I need [10](latency) ms 
-      - I need [20](latency) ms 
+      - I need [10](latency) ms
+      - I need [20](latency) ms
       - Just [20](latency) ms
       - Just [10](latency) ms
       - [20](latency)
       - [10](latency)
-      - [20](latency)ms
-      - [10](latency)ms
-
+      - [20](latency) ms
+      - [10](latency) ms
   - intent: inform_resolution
     examples: |
       - I want a resolution of [640x480](resolution)
