@@ -12,8 +12,8 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
-from .utils import setup
-from .database import create_connection
+from .utils import setup_environment
+from .database.utils import create_connection
 class ActionProcessIntent(Action):
     """
         This class is an action that will be executed once the intent has been identified
@@ -28,9 +28,9 @@ class ActionProcessIntent(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         # get logger
-        logger = setup()
-        logger.debug("Received Action to process intent")
-        # connect to database
+        logger = setup_environment()
+        logger.info("Received Action to process intent")
+        # connect to database 
         create_connection(logger)
         # get values from the tracker
         user_intent = {

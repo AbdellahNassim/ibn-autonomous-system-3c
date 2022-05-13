@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 import logging
 import os
 
-def setup():
+def setup_environment():
     """
         This is a simple setup function it load environment variables and
         configure a logger. 

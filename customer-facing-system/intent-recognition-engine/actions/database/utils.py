@@ -1,6 +1,7 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from .models import Base
 
 def create_connection(logger):
     """
@@ -36,7 +37,19 @@ def create_connection(logger):
     logger.info(f"Connecting to database using {connectionUrl}")
     # create connection
     engine = create_engine(connectionUrl)
+    # initialize db 
+    initiate_db(logger, engine)
     # create scoped session 
     # this is very important to have a unique session for each user
     db = scoped_session(sessionmaker(bind=engine))
     return db
+
+
+def initiate_db(logger, engine):
+    """
+        Creation of datababase tables from models 
+    """
+    logger.info("Creating database tables")
+    # create the tables based on the models 
+    Base.metadata.create_all(engine)
+
