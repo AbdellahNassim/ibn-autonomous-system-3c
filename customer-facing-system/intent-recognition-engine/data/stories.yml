@@ -29,8 +29,17 @@ stories:
       - intent: affirm
       - slot_was_set:
           - service: video
-      - action: video_service_params_form
+      - action: action_customize_video_service
       - active_loop: video_service_params_form
+
+  # This is the case where the user don't want to customize the service
+  - story: User don't customize video service
+    steps:
+      - checkpoint: user_customization
+      - intent: deny
+      - slot_was_set:
+          - service: video
+      - action: action_process_intent
 
   # This is in case the user requests a gaming service
   - story: Request gaming service
@@ -44,9 +53,3 @@ stories:
           - service: gaming
       - action: utter_confirm_service
       - checkpoint: user_customization
-
-  - story: User don't customize service
-    steps:
-      - checkpoint: user_customization
-      - intent: deny
-      - action: utter_service_will_be_deployed

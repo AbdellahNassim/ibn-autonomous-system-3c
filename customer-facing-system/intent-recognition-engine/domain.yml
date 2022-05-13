@@ -1,15 +1,14 @@
 version: "3.1"
-
 intents:
-  - greet
-  - goodbye
   - affirm
-  - deny
   - bot_challenge
-  - request_service
-  - out_of_scope
+  - deny
+  - goodbye
+  - greet
   - inform_latency
   - inform_resolution
+  - out_of_scope
+  - request_service
 
 responses:
   utter_greet:
@@ -19,13 +18,20 @@ responses:
     - text: "What type of service you want ?"
 
   utter_confirm_service:
-    - text: "You have requested a {service} Service, do you want to customize it ?"
+    - text: "You have requested a {service} Service, it ensure {latency}ms latency and a resolution of {resolution}, do you want to customize it ?"
 
   utter_ask_latency:
     - text: "What is the minimum amount of latency you want? (ms)"
 
   utter_ask_resolution:
     - text: "What is the required video resolution you want?"
+      buttons:
+        - title: "low (640x480)"
+          payload: '/inform_resolution{{"resolution": 640x480}}'
+        - title: "medium (1280x720)"
+          payload: '/inform_resolution{{"resolution": 1280x720}}'
+        - title: "high (1920x1080)"
+          payload: '/inform_resolution{{"resolution": 1920x1080}}'
 
   utter_dont_understand:
     - text: "I don't understand what you want."
@@ -41,17 +47,15 @@ responses:
 
 # Here we define the entities that our NLU will extract from text
 entities:
-  - service_type
   - latency
   - resolution
+  - service_type
 
 slots:
   # We will use this slot to save the requested service name
   # To be able to forward it to the action server afterhand
   service:
     type: text
-    # This slot will not influence the conversation
-    # we will use it only to store the selected service
     influence_conversation: true
     mappings:
       - type: from_entity
@@ -59,12 +63,20 @@ slots:
   # Latency is one of the qos parameters of the service
   latency:
     type: float
+    initial_value: 20
+    min_value: 0.0
+    max_value: 1000.0
     mappings:
       - type: from_entity
         entity: latency
   # Resolution is one of the qos parameters of the video service
   resolution:
-    type: text
+    type: categorical
+    initial_value: 1920x1080
+    values:
+      - 640x480
+      - 1280x720
+      - 1920x1080
     mappings:
       - type: from_entity
         entity: resolution
@@ -78,7 +90,10 @@ forms:
 
 # Here are the custom actions that will be executed
 actions:
-  - action_hello_world
+  - action_customize_video_service
+  - action_process_intent
+  - utter_confirm_service
+  - utter_greet
 
 session_config:
   session_expiration_time: 60
