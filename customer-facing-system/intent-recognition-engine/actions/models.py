@@ -4,30 +4,76 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
-class Users(Base):
+class User(Base):
     """
-        User model 
+        User model
     """
-    __tablename__ = 'users'
-    user_id = Column(Integer, primary_key=True)
-    username = Column(String)
-    password = Column(String)
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
+    username = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
+    # This property will allow us to simplifies the queries it won't be added to the schema
+    intents = relationship("Intent", back_populates="user")
     
     def __repr__(self):
         return "<User(username='{}', password='{}')>"\
                 .format(self.username, self.password)
 
-class IntentService(Base):
-    __tablename__ = 'intent_services'
-    service_id = Column(Integer, primary_key=True)
-    service_type = Column(String)
+class Intent(Base):
+    """
+        Intent model 
+    """
+    __tablename__ = 'intent'
+    id = Column(String, primary_key=True, unique=True)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    service_id = Column(Integer, ForeignKey('intent_service.id'))
+    request_date = Column(DateTime, default=datetime.datetime.utcnow)
+    delivery_status = Column(String, nullable=False)
 
-    # This is used to declare a one to one relationship 
-    params = relationship("VideoServiceParams", back_populates="intent_services", uselist=False)
+    ## Relationships
+    # This will allow us to have intent.user() and get all the intents of a user
+    user = relationship("User", back_populates="intents")
+    # With the use of uselist we make the relation one to one
+    service = relationship("IntentService", back_populates="intent", uselist=False)
     
     def __repr__(self):
-        return "<IntentService(service_id='{}', type='{}')>"\
-                .format(self.service_id, self.service_type)
+        return "<Intent(id='{}', user_id='{}', service_id='{}', request_date='{}', delivery_status='{}')>"\
+                .format(self.id, self.user_id, self.service_id, self.request_date, self.delivery_status)
+
+
+class IntentService(Base):
+    """
+        Intent Service Model 
+    """
+    __tablename__ = 'intent_service'
+    id = Column(Integer, primary_key=True)
+    type_id = Column(Integer, ForeignKey("service_type.id"))
+
+    # This allow to have a many to one relationship where each intent service has a type
+    type = relationship('ServiceType', back_populates='intent_services')
+    # Each intent service is defined by an intent
+    intent = relationship("Intent", back_populates='service')
+    # This won't be added to the database schema it will just help us in queries !
+    # In django it is generated automatically but in sql alchemy it needs to be defined
+    video_service_params = relationship("VideoServiceParams", back_populates="intent_service", uselist=False)
+    def __repr__(self):
+        return "<IntentService(service_id='{}', type_id='{}')>"\
+                .format(self.id, self.type_id)
+
+class ServiceType(Base):
+    """
+        Service Type model 
+    """
+    __tablename__ = 'service_type'
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+
+    ## Relationships
+    # This will make us have a one to many relationship 
+    intent_services = relationship("IntentService", back_populates="type")
+    def __repr__(self):
+        return "<ServiceType(id='{}', name='{}')>"\
+                .format(self.id, self.name)
 
 
 class VideoServiceParams(Base):
@@ -35,30 +81,12 @@ class VideoServiceParams(Base):
         Params of the Video Service Model
     """
     __tablename__ = 'video_service_params'
-    service_id = Column(Integer, primary_key=True)
-    latency_min = Column(Integer)
-    resolution = Column(String)
+    service_id = Column(Integer, ForeignKey('intent_service.id'), primary_key=True)
+    latency_min = Column(Integer, nullable=False)
+    resolution = Column(String, nullable=False)
     # same thing to get the relationship 
     intent_service = relationship("IntentService", back_populates="video_service_params")
     
     def __repr__(self):
         return "<VideoServiceParams(service_id='{}', latency_min='{}', resolution='{}')>"\
                 .format(self.service_id, self.latency_min, self.resolution)
-
-
-class Intents(Base):
-    """
-        Intent model 
-    """
-    __tablename__ = 'intents'
-    intent_id = Column(String, primary_key=True)
-    user_id = Column(Integer, ForeignKey('users.user_id'))
-    service = Column(Integer, ForeignKey('intent_services.service_id'))
-    request_date = Column(Date)
-    status = Column(String)
-    # This will allow us to have user.intents() and get all the intents of a user
-    users = relationship("Users", back_populates="intents")
-    
-    def __repr__(self):
-        return "<Intent(intent_id='{}', user_id='{}', service='{}', request_date='{}', status='{}')>"\
-                .format(self.intent_id, self.user_id, self.service, self.request_date, self.status)
