@@ -24,6 +24,42 @@ services:
     networks:
       - recognition-network
 
+  intent_store:
+    container_name: intent_store
+    image: postgres
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - intent_store_network
+    restart: unless-stopped
+
+  intent_store_admin_panel:
+    container_name: intent_store_admin_panel
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-akramboutouchent@gmail.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - intent_store_network
+    restart: unless-stopped
+
 networks:
   ingestion-network:
   recognition-network:
+  intent_store_network:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:

@@ -11,6 +11,9 @@ COPY ./requirements.txt /app/
 
 USER root
 
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends build-essential curl libpq-dev 
+
 # Install requirements 
 RUN pip install --verbose -r requirements.txt
 
