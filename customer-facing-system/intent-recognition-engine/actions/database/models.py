@@ -33,9 +33,9 @@ class Intent(Base):
 
     ## Relationships
     # This will allow us to have intent.user() and get all the intents of a user
-    user = relationship("User", back_populates="intents", cascade="all, delete-orphan")
+    user = relationship("User", back_populates="intents")
     # With the use of uselist we make the relation one to one
-    service = relationship("IntentService", back_populates="intent", uselist=False, cascade="all, delete-orphan")
+    service = relationship("IntentService", back_populates="intent", uselist=False)
     
     def __repr__(self):
         return "<Intent(id='{}', user_id='{}', service_id='{}', request_date='{}', delivery_status='{}')>"\
@@ -51,7 +51,7 @@ class IntentService(Base):
     type_id = Column(Integer, ForeignKey("service_type.id"))
 
     # This allow to have a many to one relationship where each intent service has a type
-    type = relationship('ServiceType', back_populates='intent_services', cascade="all, delete-orphan")
+    type = relationship('ServiceType', back_populates='intent_services')
     # Each intent service is defined by an intent
     intent = relationship("Intent", back_populates='service', cascade="all, delete-orphan")
     # This won't be added to the database schema it will just help us in queries !
@@ -86,7 +86,7 @@ class VideoServiceParams(Base):
     latency_min = Column(Integer, nullable=False)
     resolution = Column(String, nullable=False)
     # same thing to get the relationship 
-    intent_service = relationship("IntentService", back_populates="video_service_params", cascade="all, delete-orphan")
+    intent_service = relationship("IntentService", back_populates="video_service_params")
     
     def __repr__(self):
         return "<VideoServiceParams(service_id='{}', latency_min='{}', resolution='{}')>"\

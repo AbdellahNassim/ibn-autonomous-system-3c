@@ -3,10 +3,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from .models import Base
 
-def create_connection(logger):
+def create_session(logger):
     """
         This function will try to connect to the intent store database 
-        It gets environment variables and create a url connection
+        It gets environment variables and create a connection
     """
      # check database user 
     if 'DATABASE_USER' not in os.environ:

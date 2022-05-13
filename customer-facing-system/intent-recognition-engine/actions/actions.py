@@ -1,19 +1,11 @@
-# This files contains your custom actions which can be used to run
-# custom Python code.
-#
-# See this guide on how to implement these action:
-# https://rasa.com/docs/rasa/custom-actions
-
-
-# This is a simple example for a custom action which utters "Hello World!"
-
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
-from .utils import setup_environment
-from .database.utils import create_connection
+from .utils import setup_logger, save_intent
+from .database.utils import create_session
+
 class ActionProcessIntent(Action):
     """
         This class is an action that will be executed once the intent has been identified
@@ -28,18 +20,27 @@ class ActionProcessIntent(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
         # get logger
-        logger = setup_environment()
+        logger = setup_logger()
         logger.info("Received Action to process intent")
-        # connect to database 
-        create_connection(logger)
+        # connect to database and create a session
+        session = create_session(logger)
         # get values from the tracker
         user_intent = {
             "service_type":tracker.get_slot('service'),
             "latency":tracker.get_slot('latency'),
-            "resolution":tracker.get_slot('resolution')
+            "resolution":tracker.get_slot('resolution'),
+            # This is just a mockup until we implement the user authentication
+            # TODO 
+            "user_id":1
         }
-
-        dispatcher.utter_message(text="Hello World!")
+        # save the intent in the intent store 
+        try:
+            save_intent(session, logger, user_intent)
+            dispatcher.utter_message(response='utter_service_will_be_deployed')
+        except Exception as e:
+            logger.error(str(e))
+            dispatcher.utter_message(text="We are sorry an error has occured")
+        
         return []
 class ActionCustomizeVideoService(Action):
     """
