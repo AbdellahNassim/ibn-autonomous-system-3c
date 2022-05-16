@@ -3,6 +3,8 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
+from rasa_sdk.forms import FormValidationAction
+from rasa_sdk.types import DomainDict
 from .utils import setup_logger, save_intent
 from .database.utils import create_session
 
@@ -56,10 +58,45 @@ class ActionCustomizeVideoService(Action):
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # Once the user wants to customize it's service we need to 
         # reinitialize all the default values 
-        # reinitialize_latency = SlotSet("latency",None )
-        # reinitialize_resolution =  SlotSet("resolution",None) 
         # Launch the form 
         start_form = FollowupAction("video_service_params_form")
         return [SlotSet("latency",None ),
                 SlotSet("resolution",None) ,
                 start_form ]
+
+# This class will ensure the validation of video service parameters
+class ValidateRestaurantForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_video_service_params_form"
+    # Vlidate latency 
+
+    def validate_resolution(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate latency value."""
+        try:
+            latency = int(slot_value)
+            return {"latency": slot_value}
+        except:
+           return {"latency": None} 
+
+    # Validate the resolution
+    def validate_resolution(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        """Validate resolution value."""
+        # We will check if the value extracted is in the resolutions we have 
+        if slot_value in domain["slots"]["resolution"]["values"]:
+            return {"resolution": slot_value}
+        else:
+            return {"resolution": None}
+
+            

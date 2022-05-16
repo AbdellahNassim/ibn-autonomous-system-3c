@@ -91,6 +91,7 @@ forms:
 # Here are the custom actions that will be executed
 actions:
   - action_customize_video_service
+  - validate_video_service_params_form
   - action_process_intent
   - utter_confirm_service
   - utter_greet
