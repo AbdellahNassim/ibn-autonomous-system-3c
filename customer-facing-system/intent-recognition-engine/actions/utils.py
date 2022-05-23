@@ -5,6 +5,7 @@ import uuid
 from .database.models import *
 from .rdf.utils import *
 import datetime
+import requests
 
 def setup_logger():
     """
@@ -30,7 +31,7 @@ def setup_logger():
 
 def save_intent(session, logger, user_intent):
     # generate unique intent id 
-    intent_id = str(uuid.uuid4())
+    intent_id = "intent-"+str(uuid.uuid4())[:8]
     logger.info(f'Generated unique intent id {intent_id}')
     # get service type by type name 
     service_type = session.query(ServiceType).filter(ServiceType.name==user_intent['service_type']).first()
@@ -68,17 +69,27 @@ def save_intent(session, logger, user_intent):
         # commit transactions 
         session.commit()
         logger.info('The user intent has been saved successfully')
+        # updating the user intent with intent id 
+        user_intent['id'] = intent_id
         # close session
         session.close()
         
 
 
 
-def send_intent_backend(user_intent):
+def send_intent_backend(logger, user_intent):
     """
         Takes in the user extracted intent, map it into a standard format 
         and send it to the backend system
     """
     standard_intent = standardize_intent(user_intent)
-    print(standard_intent)
+    if "BACKEND_URL" not in os.environ:
+        raise Exception("Environment variable $BACKEND_URL was not set ")
+    backend_url = os.environ["BACKEND_URL"]
     # send intent to backend service 
+    logger.info("Sending standardized intent to backend "+backend_url+"/deploy")
+    response = requests.post(backend_url+"/deploy",json={"intent":standard_intent})
+    if response.status_code !=200:
+        raise Exception(f"An error occurred while sending the intent {response.status_code} was received")
+    logger.info("Intent sent successfully ")
+
