@@ -49,6 +49,8 @@ class IntentService(Base):
     __tablename__ = 'intent_service'
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     type_id = Column(Integer, ForeignKey("service_type.id"))
+    provider_name = Column(String, nullable=False)
+    provider_url = Column(String, nullable=False)
 
     # This allow to have a many to one relationship where each intent service has a type
     type = relationship('ServiceType', back_populates='intent_services')

@@ -3,6 +3,7 @@ import logging
 import os
 import uuid
 from .database.models import *
+from .rdf.utils import *
 import datetime
 
 def setup_logger():
@@ -45,6 +46,7 @@ def save_intent(session, logger, user_intent):
     # create a new service 
     intent_service = IntentService(type_id=service_type.id)
     # TODO this should be done dynamically
+    # In order to allow having multiple services 
     if service_type.name =='video':
         logger.info('Saving the video service parameters')
         # create new video service params 
@@ -65,6 +67,18 @@ def save_intent(session, logger, user_intent):
         session.add(intent)
         # commit transactions 
         session.commit()
+        logger.info('The user intent has been saved successfully')
         # close session
         session.close()
         
+
+
+
+def send_intent_backend(user_intent):
+    """
+        Takes in the user extracted intent, map it into a standard format 
+        and send it to the backend system
+    """
+    standard_intent = standardize_intent(user_intent)
+    print(standard_intent)
+    # send intent to backend service 
