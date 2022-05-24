@@ -1,5 +1,0 @@
-@prefix ex: <http://scoring-ibn.com/> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-ex:intent200 a 30 .
-

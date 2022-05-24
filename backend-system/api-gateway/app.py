@@ -1,8 +1,6 @@
 from flask import Flask, request, jsonify
-import json
 import os
-from rdflib import Graph
-from utils import setup_logger
+from utils import setup_logger, validate_intent_format, forward_intent
 
 
 app = Flask(__name__)
@@ -23,26 +21,25 @@ def services():
     # depending on the content type we will map our data
     if request.content_type == "application/json":
         logger.info("Received intent in json format")
-        # the received content is in json
-        received_intent_json = json.dumps(request.get_json())
-        logger.info(received_intent_json)
-        # creating a graph back
-        g = Graph()
-        current_absolute_path = 'file://' + os.path.abspath('.')+'/'
-        print(current_absolute_path)
-        received_intent_json = received_intent_json.replace(
-            current_absolute_path, '')
-        print(received_intent_json)
-        # parsing the format
-        g.parse(format="json-ld", data=received_intent_json)
-        if len(g) == 0:
+        # validate the intent format (rdf)
+        intent_validated = validate_intent_format(
+            'json', request.get_json(), logger)
+        # check if it's valid
+        if not intent_validated:
             return jsonify(exception="Error parsing the intent")
         else:
-            print(g.serialize(format="turtle"))
+            # if the intent is valid then send it back to the backend
+            return forward_intent(intent_validated, logger)
     elif request.content_type == "application/xml":
-        # if the received content is in xml then
-        print(request.content_type)
-        print(request.get_data())
+        intent_validated = validate_intent_format(
+            "xml", request.get_data(), logger)
+        # check if it's valid
+        if not intent_validated:
+            return jsonify(exception="Error parsing the intent")
+        else:
+            # if the intent is valid then send it back to the backend
+            return forward_intent(intent_validated, logger)
+
     else:
         # adding support for other formats
         print(request.content_type)
