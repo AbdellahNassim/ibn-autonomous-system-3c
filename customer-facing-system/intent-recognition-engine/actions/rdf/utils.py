@@ -1,6 +1,5 @@
-from rdflib import Graph, Literal, RDF, URIRef, BNode
+from rdflib import Graph, Literal, RDF, URIRef, BNode, Namespace
 from .namespaces import ICM, Catalog, VideoService
-
 def standardize_intent(logger, user_intent):
     """
         This function will takes in a user intent and map it to 
@@ -21,13 +20,13 @@ def standardize_intent(logger, user_intent):
     # create the ontology graph 
     g = Graph()
     # creating namespaces
-    create_namespaces(g)
+    base_namespace = create_namespaces(g)
     # create delivery expectation
-    delivery_expectation = create_delivery_expectation(g)
+    delivery_expectation = create_delivery_expectation(g,base_namespace)
     # create property expectation 
-    property_expectation = create_property_expectation(g,latency=user_intent["latency"], resolution=user_intent['resolution'])
+    property_expectation = create_property_expectation(g,base_namespace, latency=user_intent["latency"], resolution=user_intent['resolution'])
     # create the intent 
-    intent  = create_intent(g, user_intent['id'] , delivery_expectation, property_expectation)
+    intent  = create_intent(g, base_namespace, user_intent['id'] , delivery_expectation, property_expectation)
     logger.info("Standard intent format has been generated")
     logger.info(g.serialize(format="turtle"))
 
@@ -45,11 +44,16 @@ def create_namespaces(graph):
     graph.bind("cat",Catalog)
     # define the video service provider mode namespace
     graph.bind("vid",VideoService)
+    # create the base namespace 
+    scoring_base = Namespace('https://socring-ibn.univ-lr.fr/')
+    # bind the namespace
+    graph.bind('sc',scoring_base)
+    return scoring_base
     
 
-def create_intent(graph, intent_id, delivery_expectation,property_expectation):
+def create_intent(graph, base_namespace,intent_id, delivery_expectation,property_expectation):
     # creates a new intent 
-    intent = URIRef(intent_id)
+    intent = base_namespace[intent_id]
     # it has a type of intent 
     graph.add((intent, RDF.type, ICM.Intent))
     # it has a delivery expectation to deliver a service 
@@ -59,14 +63,14 @@ def create_intent(graph, intent_id, delivery_expectation,property_expectation):
     return intent 
 
 
-def create_delivery_expectation(graph):
+def create_delivery_expectation(graph, base_namespace):
     """
         Creating delivery expectations
         A delivery expectation defines what the intent is expecting to deliver 
         In our case the intent will deliver a service 
     """
     # Creating a new subject
-    service_delivery_expectation = URIRef("service_delivery_expectation")
+    service_delivery_expectation = base_namespace["service_delivery_expectation"]
     # the subject is a delivery expectation
     graph.add((service_delivery_expectation, RDF.type, ICM.DeliveryExpectation))
     # it target the delivery of a service 
@@ -75,7 +79,7 @@ def create_delivery_expectation(graph):
     graph.add((service_delivery_expectation, ICM.target, Literal("service")))
 
     # defining the params of the target 
-    service_type_param = URIRef('service_type_param')
+    service_type_param = base_namespace['service_type_param']
     # the service_type_param is a deliveryparam
     graph.add((service_type_param,RDF.type, ICM.DeliveryParam))
     # It target a video service from the scoring catalog 
@@ -85,7 +89,7 @@ def create_delivery_expectation(graph):
     
     return service_delivery_expectation
 
-def create_property_expectation(graph, **service_params):
+def create_property_expectation(graph,base_namespace, **service_params):
     """
         Creates a property expectation. 
         The property expectation specify the requirements on the properties 
@@ -93,7 +97,7 @@ def create_property_expectation(graph, **service_params):
         In our case it specify the properties of the service to be delivered.
     """
     # create a new variable 
-    service_property_expectation = URIRef('service_property_expectation')
+    service_property_expectation = base_namespace['service_property_expectation']
     # the variable is a property expectation
     graph.add((service_property_expectation, RDF.type, ICM.PropertyExpectation))
     # The property expectation target the service 
@@ -101,7 +105,7 @@ def create_property_expectation(graph, **service_params):
     graph.add((service_property_expectation, ICM.target, Literal("service")))
     for param,value in service_params.items():
         # create a new variable of the param
-        service_param = URIRef('service_'+ param +'_param')
+        service_param = base_namespace['service_'+ param +'_param']
         # the variable is a propertyParam
         graph.add((service_param,RDF.type, ICM.PropertyParam))
 
