@@ -1,7 +1,7 @@
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import scoped_session, sessionmaker
-from .models import Base
+from .models import Base, User, Service, ServiceType
 
 def create_session(logger):
     """
@@ -37,11 +37,18 @@ def create_session(logger):
     logger.info(f"Connecting to database using {connectionUrl}")
     # create connection
     engine = create_engine(connectionUrl)
-    # initialize db 
-    initiate_db(logger, engine)
     # create scoped session 
     # this is very important to have a unique session for each user
     db = scoped_session(sessionmaker(bind=engine))
+    # check if tables exists already 
+    if not inspect(engine).has_table("service"):
+        logger.info("The Intent store database was found empty So we will create tables")
+        # If not then 
+        # initialize db 
+        initiate_db(logger, engine)
+        logger.info("Database empty seeding with data ")
+        # And seed it with initial data 
+        seed_db(logger, db)    
     return db
 
 
@@ -52,4 +59,23 @@ def initiate_db(logger, engine):
     logger.info("Creating database tables")
     # create the tables based on the models 
     Base.metadata.create_all(engine)
+
+def seed_db(logger, session):
+    """
+        Seeding database with an initial user and a service type
+        #todo Just for testing 
+    """
+    # Creating user 
+    user = User(username="akram09", password="c8fed00eb2e87f1cee8e90ebbe870c190ac3848c")
+    # Creating Service Type
+    service_type = ServiceType(name="video", provider_name="Netflix", provider_url="https://netflix.com")
+
+    # persisting 
+    session.add(user)
+    session.add(service_type)
+    
+    # commit the transaction 
+    session.commit()
+
+
 

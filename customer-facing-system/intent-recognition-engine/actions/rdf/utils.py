@@ -1,7 +1,7 @@
 from rdflib import Graph, Literal, RDF, URIRef, BNode
-from namespaces import ICM, Catalog, VideoService
+from .namespaces import ICM, Catalog, VideoService
 
-def standardize_intent(user_intent):
+def standardize_intent(logger, user_intent):
     """
         This function will takes in a user intent and map it to 
         a standard format of the TmForum model 
@@ -28,8 +28,8 @@ def standardize_intent(user_intent):
     property_expectation = create_property_expectation(g,latency=user_intent["latency"], resolution=user_intent['resolution'])
     # create the intent 
     intent  = create_intent(g, user_intent['id'] , delivery_expectation, property_expectation)
-    log.info("Standard intent format has been generated")
-    log.info(g.serialize(format="turtle"))
+    logger.info("Standard intent format has been generated")
+    logger.info(g.serialize(format="turtle"))
 
     # returning the intent in json format to be sent 
     return g.serialize(format="json-ld")
@@ -117,9 +117,3 @@ def create_property_expectation(graph, **service_params):
         # the service property has params this parameter
         graph.add((service_property_expectation, ICM.params, service_param))
     return service_property_expectation
-
-
-
-
-
-standardize_intent(1)

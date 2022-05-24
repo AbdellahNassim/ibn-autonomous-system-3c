@@ -40,7 +40,7 @@ class ActionProcessIntent(Action):
             save_intent(session, logger, user_intent)
             # once the intent saved in intent store
             # we send it to be deployed
-            send_intent_backend(user_intent)
+            send_intent_backend(logger, user_intent)
             dispatcher.utter_message(response='utter_service_will_be_deployed')
         except Exception as e:
             logger.error(str(e))
