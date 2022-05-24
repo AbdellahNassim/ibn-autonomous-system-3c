@@ -1,13 +1,12 @@
-FROM node:16-alpine
+FROM python:3.8-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
+COPY requirements.txt requirements.txt
+RUN pip3 install -r requirements.txt
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 80
 
-ENTRYPOINT [ "npm", "start" ]
+ENTRYPOINT ["python3",  "app.py"]
