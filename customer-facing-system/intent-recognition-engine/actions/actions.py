@@ -5,7 +5,7 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
 from rasa_sdk.forms import FormValidationAction
 from rasa_sdk.types import DomainDict
-from .utils import setup_logger, save_intent
+from .utils import setup_logger, save_intent, send_intent_backend
 from .database.utils import create_session
 
 class ActionProcessIntent(Action):
@@ -38,6 +38,9 @@ class ActionProcessIntent(Action):
         # save the intent in the intent store 
         try:
             save_intent(session, logger, user_intent)
+            # once the intent saved in intent store
+            # we send it to be deployed
+            send_intent_backend(logger, user_intent)
             dispatcher.utter_message(response='utter_service_will_be_deployed')
         except Exception as e:
             logger.error(str(e))
@@ -68,8 +71,8 @@ class ActionCustomizeVideoService(Action):
 class ValidateRestaurantForm(FormValidationAction):
     def name(self) -> Text:
         return "validate_video_service_params_form"
-    # Vlidate latency 
 
+    # Validate latency 
     def validate_resolution(
         self,
         slot_value: Any,

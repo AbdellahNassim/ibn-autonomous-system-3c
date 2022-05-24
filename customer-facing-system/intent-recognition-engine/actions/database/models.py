@@ -27,7 +27,7 @@ class Intent(Base):
     __tablename__ = 'intent'
     id = Column(String, primary_key=True, unique=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    service_id = Column(Integer, ForeignKey('intent_service.id'))
+    service_id = Column(Integer, ForeignKey('service.id'))
     request_date = Column(DateTime, default=datetime.datetime.utcnow)
     delivery_status = Column(String, nullable=False)
 
@@ -35,30 +35,30 @@ class Intent(Base):
     # This will allow us to have intent.user() and get all the intents of a user
     user = relationship("User", back_populates="intents")
     # With the use of uselist we make the relation one to one
-    service = relationship("IntentService", back_populates="intent", uselist=False)
+    service = relationship("Service", back_populates="intent", uselist=False)
     
     def __repr__(self):
         return "<Intent(id='{}', user_id='{}', service_id='{}', request_date='{}', delivery_status='{}')>"\
                 .format(self.id, self.user_id, self.service_id, self.request_date, self.delivery_status)
 
 
-class IntentService(Base):
+class Service(Base):
     """
-        Intent Service Model 
+        Service Model 
     """
-    __tablename__ = 'intent_service'
+    __tablename__ = 'service'
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     type_id = Column(Integer, ForeignKey("service_type.id"))
 
     # This allow to have a many to one relationship where each intent service has a type
-    type = relationship('ServiceType', back_populates='intent_services')
-    # Each intent service is defined by an intent
+    type = relationship('ServiceType', back_populates='services')
+    # Each service is requested by an intent 
     intent = relationship("Intent", back_populates='service', cascade="all, delete-orphan")
     # This won't be added to the database schema it will just help us in queries !
     # In django it is generated automatically but in sql alchemy it needs to be defined
-    video_service_params = relationship("VideoServiceParams", back_populates="intent_service", uselist=False, cascade="all, delete-orphan")
+    video_service_params = relationship("VideoServiceParams", back_populates="service", uselist=False, cascade="all, delete-orphan")
     def __repr__(self):
-        return "<IntentService(service_id='{}', type_id='{}')>"\
+        return "<Service(service_id='{}', type_id='{}')>"\
                 .format(self.id, self.type_id)
 
 class ServiceType(Base):
@@ -68,13 +68,15 @@ class ServiceType(Base):
     __tablename__ = 'service_type'
     id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     name = Column(String, nullable=False)
+    provider_name = Column(String, nullable=False)
+    provider_url = Column(String, nullable=False)
 
     ## Relationships
     # This will make us have a one to many relationship 
-    intent_services = relationship("IntentService", back_populates="type", cascade="all, delete-orphan")
+    services = relationship("Service", back_populates="type", cascade="all, delete-orphan")
     def __repr__(self):
-        return "<ServiceType(id='{}', name='{}')>"\
-                .format(self.id, self.name)
+        return "<ServiceType(id='{}', name='{}', provider_name='{}', provider_url='{}')>"\
+                .format(self.id, self.name, self.provider_name, self.provider_url)
 
 
 class VideoServiceParams(Base):
@@ -82,11 +84,11 @@ class VideoServiceParams(Base):
         Params of the Video Service Model
     """
     __tablename__ = 'video_service_params'
-    service_id = Column(Integer, ForeignKey('intent_service.id'), primary_key=True)
+    service_id = Column(Integer, ForeignKey('service.id'), primary_key=True)
     latency_min = Column(Integer, nullable=False)
     resolution = Column(String, nullable=False)
     # same thing to get the relationship 
-    intent_service = relationship("IntentService", back_populates="video_service_params")
+    service = relationship("Service", back_populates="video_service_params")
     
     def __repr__(self):
         return "<VideoServiceParams(service_id='{}', latency_min='{}', resolution='{}')>"\
