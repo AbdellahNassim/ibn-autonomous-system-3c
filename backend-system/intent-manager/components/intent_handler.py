@@ -1,11 +1,11 @@
 import json
 from rdf_utils.utils import format_to_graph, map_rdf_intent
-from rdflib import Literal
 from database.utils import create_session
 from database.models import IntentTracker, IntentStatus
+from components.intent_scheduler import schedule_processing
 import os 
 
-def handle_intent(logger, intent):
+def handle_intent(logger,queue, intent):
     """
         Handle the received intent. This function will take care of saving the intent 
         And  map it to be scheduled
@@ -17,6 +17,8 @@ def handle_intent(logger, intent):
     result_intent = map_rdf_intent(logger, intent_graph)
     # save the intent to be tracked 
     save_intent(logger, result_intent['id'], intent_graph)
+    # schedule the processing of the intent 
+    schedule_processing(logger, queue, result_intent)
 
 
 def format_intent(logger,intent):

@@ -14,7 +14,7 @@ def setup_logger():
     # Now we can access those variables like any environment variable
     # configure the logging format
     logging.basicConfig(
-        format="[%(levelname)s] - %(asctime)s - %(name)s - : %(message)s in %(pathname)s")
+        format="[%(levelname)s] - %(asctime)s - %(name)s - : %(message)s ")
     # set logger name
     log = logging.getLogger("Intent Manager")
     # Check if we are in debug mode
