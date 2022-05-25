@@ -1,7 +1,7 @@
 import os
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import scoped_session, sessionmaker
-from .models import Base, User, Service, ServiceType
+from .models import Base
 
 def create_session(logger):
     """
@@ -47,3 +47,13 @@ def create_session(logger):
         # initialize db 
         initiate_db(logger, engine)
     return db
+
+
+def initiate_db(logger, engine):
+    """
+        Creation of datababase tables from models 
+    """
+    logger.info("Creating database tables")
+    # create the tables based on the models 
+    Base.metadata.create_all(engine)
+
