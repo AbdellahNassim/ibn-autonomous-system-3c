@@ -1,0 +1,100 @@
+[
+  {
+    "@id": "https://socring-ibn.univ-lr.fr/service_delivery_expectation",
+    "@type": [
+      "https://www.tmforum.org/2020/07/IntentCommonModel/DeliveryExpectation"
+    ],
+    "https://www.tmforum.org/2020/07/IntentCommonModel/params": [
+      {
+        "@id": "https://socring-ibn.univ-lr.fr/service_type_param"
+      }
+    ],
+    "https://www.tmforum.org/2020/07/IntentCommonModel/target": [
+      {
+        "@value": "service"
+      }
+    ]
+  },
+  {
+    "@id": "https://socring-ibn.univ-lr.fr/service_type_param",
+    "@type": [
+      "https://www.tmforum.org/2020/07/IntentCommonModel/DeliveryParam"
+    ],
+    "https://www.tmforum.org/2020/07/IntentCommonModel/targetDescription": [
+      {
+        "@id": "https://chistera-scoring.github.io/services-catalog/index.yamlvideo"
+      }
+    ]
+  },
+  {
+    "@id": "https://socring-ibn.univ-lr.fr/service_latency_param",
+    "@type": [
+      "https://www.tmforum.org/2020/07/IntentCommonModel/PropertyParam"
+    ],
+    "https://360videoProvider/model/latency": [
+      {
+        "@id": "_:N508f953b5a1749d19a9aa4f03146e31a"
+      }
+    ]
+  },
+  {
+    "@id": "_:N508f953b5a1749d19a9aa4f03146e31a",
+    "https://www.tmforum.org/2020/07/IntentCommonModel/exactly": [
+      {
+        "@value": "20"
+      }
+    ]
+  },
+  {
+    "@id": "https://socring-ibn.univ-lr.fr/service_resolution_param",
+    "@type": [
+      "https://www.tmforum.org/2020/07/IntentCommonModel/PropertyParam"
+    ],
+    "https://360videoProvider/model/resolution": [
+      {
+        "@id": "_:Nc61be8d851a54a87ab6c8f036c93f615"
+      }
+    ]
+  },
+  {
+    "@id": "_:Nc61be8d851a54a87ab6c8f036c93f615",
+    "https://www.tmforum.org/2020/07/IntentCommonModel/exactly": [
+      {
+        "@value": "640x480"
+      }
+    ]
+  },
+  {
+    "@id": "https://socring-ibn.univ-lr.fr/service_property_expectation",
+    "@type": [
+      "https://www.tmforum.org/2020/07/IntentCommonModel/PropertyExpectation"
+    ],
+    "https://www.tmforum.org/2020/07/IntentCommonModel/params": [
+      {
+        "@id": "https://socring-ibn.univ-lr.fr/service_latency_param"
+      },
+      {
+        "@id": "https://socring-ibn.univ-lr.fr/service_resolution_param"
+      }
+    ],
+    "https://www.tmforum.org/2020/07/IntentCommonModel/target": [
+      {
+        "@value": "service"
+      }
+    ]
+  },
+  {
+    "@id": "https://socring-ibn.univ-lr.fr/intent-100",
+    "@type": [
+      "https://www.tmforum.org/2020/07/IntentCommonModel/Intent"
+    ],
+    "https://www.tmforum.org/2020/07/IntentCommonModel/hasExpectation": [
+      {
+        "@id": "https://socring-ibn.univ-lr.fr/service_delivery_expectation"
+      },
+      {
+        "@id": "https://socring-ibn.univ-lr.fr/service_property_expectation"
+      }
+    ]
+  }
+]
