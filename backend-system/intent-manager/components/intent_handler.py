@@ -1,5 +1,5 @@
 import json
-from rdf_utils.utils import format_to_graph
+from rdf_utils.utils import format_to_graph, map_rdf_intent
 from rdflib import Literal
 import os 
 
@@ -24,6 +24,7 @@ def format_intent(logger,intent):
     intent_string = json.dumps(intent)
     # Format the intent and log it 
     graph = format_to_graph(logger, intent_string)
+    map_rdf_intent(logger, graph)
     return graph
 
 
@@ -34,4 +35,3 @@ def save_intent(logger, intent_graph):
         Save the intent in order to be tracked later
     """
     
-

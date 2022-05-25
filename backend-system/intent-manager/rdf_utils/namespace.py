@@ -107,7 +107,7 @@ class Catalog(DefinedNamespace):
     # individuals 
     video: URIRef
     
-    _NS = Namespace("https://chistera-scoring.github.io/services-catalog/index.yaml")
+    _NS = Namespace("https://chistera-scoring.github.io/services-catalog/")
 
 
 class VideoService(DefinedNamespace):
