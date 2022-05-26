@@ -46,5 +46,6 @@ def save_intent(logger, intent_id, intent_graph):
     intent_tracker = IntentTracker(id=intent_id,intent_rdf=intent_graph.serialize(format="turtle"), status=IntentStatus.IN_PROGRESS)
     db_session.add(intent_tracker)
     db_session.commit()
+    db_session.close()
     logger.info("Intent saved successfully")
     

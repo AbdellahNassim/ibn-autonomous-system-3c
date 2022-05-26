@@ -17,6 +17,8 @@ queue = setup_queue(logger)
 # launching the workers 
 workers = setup_workers(logger, queue)
 
+
+
 @app.route('/')
 def hello():
     return '<h1>Hello From Intent Decision Maker  </h1>'
@@ -28,7 +30,7 @@ def process_intent():
     received_intent = request.get_json()
     # pass the received intent to the intent handler
     handle_intent(logger, queue, received_intent)
-    return jsonify('Intent received successfully')
+    return jsonify('Intent deployment scheduled successfully')
 
 
 

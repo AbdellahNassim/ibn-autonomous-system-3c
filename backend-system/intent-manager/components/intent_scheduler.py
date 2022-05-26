@@ -36,7 +36,9 @@ def setup_workers(logger, queue):
         worker = threading.Thread(target=process_intent, 
                                 args=("intent-decision-maker-{}".format(i+1), 
                                 queue, logger))
+        # start instance of the decision makier
         worker.start()
+        # save it so we can stop it later
         workers.append(worker)
     return workers
 

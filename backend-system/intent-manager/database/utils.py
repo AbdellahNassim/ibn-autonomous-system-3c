@@ -1,7 +1,7 @@
 import os
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import scoped_session, sessionmaker
-from .models import Base
+from .models import Base, ServicesCatalog
 
 def create_session(logger):
     """
@@ -46,14 +46,32 @@ def create_session(logger):
         # If not then 
         # initialize db 
         initiate_db(logger, engine)
+        # Seed it with initial data 
+        seed_db(logger, db)
     return db
 
 
 def initiate_db(logger, engine):
     """
-        Creation of datababase tables from models 
+        Creation of database tables from models 
     """
+    
     logger.info("Creating database tables")
     # create the tables based on the models 
     Base.metadata.create_all(engine)
 
+def seed_db(logger, session):
+    """
+        Seeding database with initial data
+        #todo Just for testing 
+    """
+    # Creating Service in the catalog
+    service = ServicesCatalog(service_type="video", service_name="360video-transcoder", 
+                             service_repository="scoring-services-catalog", 
+                             service_repository_url="https://chistera-scoring.github.io/services-catalog")
+
+    # persisting 
+    session.add(service)
+    
+    # commit the transaction 
+    session.commit()
