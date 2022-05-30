@@ -25,3 +25,23 @@ def setup_logger():
         logging_level = logging.DEBUG
     log.setLevel(logging_level)
     return log
+
+def check_env_variables():
+    """
+        Check if the required env variables were specified or not 
+    """
+    if "DECISION_MAKER_INSTANCES" not in os.environ:
+        raise Exception("Environment Variable not specified $DECISION_MAKER_INSTANCES")
+    if "ML_MARKET_PLACE_HOST" not in os.environ:
+        raise Exception("Environment Variable not specified $ML_MARKET_PLACE_HOST")
+
+
+def map_resolution(resolution):
+    """
+        Mapping resolution to an integer format 
+        TODO This should be replaced.
+    """
+    if resolution =="640x480":
+        return 1
+    else:
+        return 0
