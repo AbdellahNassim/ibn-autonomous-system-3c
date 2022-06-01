@@ -58,14 +58,14 @@ func main() {
 	})
 
 	// starting the router 
-	router.Run("localhost:8001")
+	router.Run("localhost:8080")
 }
 
 // check that environment variables were set 
 func checkEnvVariables()(any, error){
 	if os.Getenv("MANO_URL") ==""{
 		log.Error("MANO_URL env variable was not set ")
-		return nil, errors.New("Environment variable not set ")
+		return nil, errors.New("environment variable not set ")
 	}
 	return nil, nil
 }
