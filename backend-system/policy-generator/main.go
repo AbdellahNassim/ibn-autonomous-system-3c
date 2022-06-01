@@ -1,8 +1,12 @@
 package main
 
 import (
+	"errors"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -15,6 +19,15 @@ type Decision struct{
 
 
 func main() {
+	// check if we are using the debug environment 
+	if os.Getenv("DEBUG")!="0" {
+		// loading environment variables from .env 
+		godotenv.Load()
+	}
+	if _, err := checkEnvVariables(); err != nil{
+		return 
+	}
+	
 	// creating the router 
 	router := gin.Default()
 	// initializing logger
@@ -46,4 +59,13 @@ func main() {
 
 	// starting the router 
 	router.Run("localhost:8001")
+}
+
+// check that environment variables were set 
+func checkEnvVariables()(any, error){
+	if os.Getenv("MANO_URL") ==""{
+		log.Error("MANO_URL env variable was not set ")
+		return nil, errors.New("Environment variable not set ")
+	}
+	return nil, nil
 }

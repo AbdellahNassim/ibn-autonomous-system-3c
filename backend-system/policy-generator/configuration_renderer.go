@@ -2,6 +2,8 @@ package main
 
 import (
 	"bytes"
+	"net/http"
+	"os"
 	"path/filepath"
 	"text/template"
 
@@ -12,7 +14,7 @@ import (
 // this function will use 2 sub functions that
 func RenderConfigurations(configuration *ServiceDeploymentConfiguration) (any, error){
 	log.Info("Rendering the configuration")
-	log.Info(configuration)
+	log.Debug(configuration)
 	// Generating subnet configuration 
 	subnetYaml, err := CommConfigRenderer(configuration)
 	if err != nil{
@@ -22,19 +24,46 @@ func RenderConfigurations(configuration *ServiceDeploymentConfiguration) (any, e
 	if err != nil{
 		return nil, err
 	}
-	log.Info(subnetYaml)
-	log.Info(valuesYaml)
+	// creating an http client 
+	client := &http.Client{}
+	// sending the subnet to be deployed 
+	subnetYamlResponse, err := sendMANOYamlPolicy(client, "/subnets", &subnetYaml)
+	if err != nil {
+		return nil, err
+	}
+	log.Debug(subnetYamlResponse.Body)
+	// sending the application values to be deployed
+	valuesYamlResponse, err := sendMANOYamlPolicy(client, "/applications", &valuesYaml)
+	if err!= nil{
+		return nil, err
+	}
+	log.Debug(valuesYamlResponse.Body)
 	return nil,nil
 }
 
-
+// simple function to allow sending http requests to the Management and Orchestration Layer 
+func sendMANOYamlPolicy(client *http.Client, route string, configYaml *bytes.Buffer)(*http.Response, error){
+	request , err := http.NewRequest("POST", os.Getenv("MANO_URL")+route, configYaml);
+	if err !=nil {
+		log.Error("Error creating request to the Mano layer "+ route)
+		log.Error(err)
+		return nil, err
+	}
+	request.Header.Add("Content-Type", "application/x-yaml")	
+	// creating http client to send request
+    res, err := client.Do(request)
+    if err != nil {
+        log.Error("An error occured while sending the yaml to the orchestrator")
+    }
+	return res, err
+}
 
 
 
 
 // function to render the communication configurations 
 // it will generate the subnet.yaml file 
-func CommConfigRenderer(config *ServiceDeploymentConfiguration) (string,error){
+func CommConfigRenderer(config *ServiceDeploymentConfiguration) (bytes.Buffer,error){
 	subnetTemplateFilePath := "./templates/subnet-template.yaml"
 	log.Info("Reading Subnet Template file " + subnetTemplateFilePath)
 	// reading the template file 
@@ -42,7 +71,7 @@ func CommConfigRenderer(config *ServiceDeploymentConfiguration) (string,error){
 	//check if error occured 
 	if err != nil{
 		log.Error(err)
-		return "", err
+		return bytes.Buffer{}, err
 	}
 	// template file read successfully 
 	// creating templates data 
@@ -57,15 +86,16 @@ func CommConfigRenderer(config *ServiceDeploymentConfiguration) (string,error){
     if err := networkSubnetTemplate.Execute(&policyBuffer, subnetTemplateData); err != nil {
 		log.Info("Error while rendering the template with data ")
 		log.Error(err)
-        return "", err
+        return bytes.Buffer{}, err
     }
+	log.Debug(policyBuffer.String())
 	log.Info("Subnet Configuration generated successfully")
-	return policyBuffer.String(), nil
+	return policyBuffer, nil
 }
 
 // function to render the computing caching configuration 
 // It will generate the values.yaml file 
-func CompCachingConfigRenderer(config *ServiceDeploymentConfiguration)(string, error){
+func CompCachingConfigRenderer(config *ServiceDeploymentConfiguration)(bytes.Buffer, error){
 	valuesTemplateFile := "./templates/values-template.yaml"
 	log.Info("Reading values Template file " + valuesTemplateFile)
 	// reading the template file 
@@ -74,7 +104,7 @@ func CompCachingConfigRenderer(config *ServiceDeploymentConfiguration)(string, e
 	if err != nil{
 		log.Error("Error while reading the template")
 		log.Error(err)
-		return "", err
+		return bytes.Buffer{}, err
 	}
 	// template file read successfully 
 	// creating templates data 
@@ -94,9 +124,9 @@ func CompCachingConfigRenderer(config *ServiceDeploymentConfiguration)(string, e
     if err := valuesTemplate.Execute(&policyBuffer, subnetTemplateData); err != nil {
 		log.Info("Error while rendering the template with data ")
 		log.Error(err)
-        return "", err
+        return bytes.Buffer{}, err
     }
-	log.Info(policyBuffer.String())
+	log.Debug(policyBuffer.String())
 	log.Info("Values Configuration generated successfully")
-	return policyBuffer.String(), nil
+	return policyBuffer, nil
 }
