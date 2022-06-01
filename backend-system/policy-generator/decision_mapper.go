@@ -37,6 +37,7 @@ type Resources struct{
 // configuration structure for the service deployment
 type ServiceDeploymentConfiguration struct {
 	IntentId string
+	Namespace string
 	// Network configurations 
 	NetworkSubnetCidr string 
 	NetworkGatewayIp string
@@ -85,11 +86,12 @@ func HandleServiceDeploy(decision *ServiceDeploymentDecision) (any, error){
 	// mapping the decision into a configuration object to be processed 
 	deploymentConfiguration := ServiceDeploymentConfiguration{
 		IntentId: decision.IntentId, 
+		Namespace: decision.IntentId,
 		NetworkSubnetCidr: "10.10.0.0/16",
 		NetworkGatewayIp: "10.10.0.1",
 		NetworkIngressRate: decision.Params.Resources.Network,
 		NetworkEgressRate: decision.Params.Resources.Network,
-		ApplicationName: decision.IntentId + "_" + decision.Params.Service.Name,
+		ApplicationName: decision.IntentId + "-" + decision.Params.Service.Name,
 		ApplicationReplicaCount: 1,
 		ApplicationChart: decision.Params.Service.Name,
 		ApplicationChartRepository: decision.Params.Service.Repository,

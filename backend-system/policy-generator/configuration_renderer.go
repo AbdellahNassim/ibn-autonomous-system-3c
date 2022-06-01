@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -27,7 +28,7 @@ func RenderConfigurations(configuration *ServiceDeploymentConfiguration) (any, e
 	// creating an http client 
 	client := &http.Client{}
 	// sending the subnet to be deployed 
-	subnetYamlResponse, err := sendMANOYamlPolicy(client, "/subnets",nil, &subnetYaml)
+	subnetYamlResponse, err := sendMANOYamlPolicy(client, "/subnets",map[string]string{"namespace":configuration.Namespace}, &subnetYaml)
 	if err != nil {
 		return nil, err
 	}
@@ -61,14 +62,22 @@ func sendMANOYamlPolicy(client *http.Client, route string, queryParams map[strin
 		for k, v := range queryParams {
 			query.Add(k,v)
 		}
+		// encoding the query
+		request.URL.RawQuery = query.Encode()
 	}
 	request.Header.Add("Content-Type", "application/x-yaml")	
 	// creating http client to send request
     res, err := client.Do(request)
     if err != nil {
         log.Error("An error occured while sending the yaml to the orchestrator")
+		log.Error(err)
+		return nil, err
     }
-	return res, err
+	if res.StatusCode != 200{
+		log.Error("Error occured in the management and orchestration plan")
+		return nil, errors.New("received a status code != 200")
+	}
+	return res, nil
 }
 
 
@@ -89,7 +98,7 @@ func CommConfigRenderer(config *ServiceDeploymentConfiguration) (bytes.Buffer,er
 	// template file read successfully 
 	// creating templates data 
 	subnetTemplateData := map[string]string{
-		"SubnetName": config.IntentId +"_subnet",
+		"SubnetName": config.IntentId +"-subnet",
 		"SubnetNamespace": config.IntentId,
 		"SubnetCidr": config.NetworkSubnetCidr,
 		"SubnetGateway": config.NetworkGatewayIp,
