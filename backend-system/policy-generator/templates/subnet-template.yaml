@@ -1,0 +1,18 @@
+apiVersion: kubeovn.io/v1
+kind: Subnet
+metadata:
+  name: {{ .SubnetName }}
+spec:
+  protocol: IPv4
+  default: false
+  namespaces:
+    - {{ .SubnetNamespace }}
+  cidrBlock: {{ .SubnetCidr }}
+  gateway: {{ .SubnetGateway }}
+  excludeIps:
+    - {{ .SubnetGateway }}
+  allowSubnets:
+    - 10.16.0.0/16
+    - 10.18.0.0/16
+  gatewayType: distributed
+  natOutgoing: true
