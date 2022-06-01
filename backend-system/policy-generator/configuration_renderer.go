@@ -27,13 +27,20 @@ func RenderConfigurations(configuration *ServiceDeploymentConfiguration) (any, e
 	// creating an http client 
 	client := &http.Client{}
 	// sending the subnet to be deployed 
-	subnetYamlResponse, err := sendMANOYamlPolicy(client, "/subnets", &subnetYaml)
+	subnetYamlResponse, err := sendMANOYamlPolicy(client, "/subnets",nil, &subnetYaml)
 	if err != nil {
 		return nil, err
 	}
 	log.Debug(subnetYamlResponse.Body)
 	// sending the application values to be deployed
-	valuesYamlResponse, err := sendMANOYamlPolicy(client, "/applications", &valuesYaml)
+	queryParams := map[string]string{
+		"namespace":configuration.IntentId,
+		"chart_name":configuration.ApplicationChart,
+		"application_name": configuration.ApplicationName,
+		"repository": configuration.ApplicationChartRepository,
+		"repository_url": configuration.ApplicationChartRepositoryUrl,
+	}
+	valuesYamlResponse, err := sendMANOYamlPolicy(client, "/applications", queryParams, &valuesYaml)
 	if err!= nil{
 		return nil, err
 	}
@@ -42,12 +49,18 @@ func RenderConfigurations(configuration *ServiceDeploymentConfiguration) (any, e
 }
 
 // simple function to allow sending http requests to the Management and Orchestration Layer 
-func sendMANOYamlPolicy(client *http.Client, route string, configYaml *bytes.Buffer)(*http.Response, error){
+func sendMANOYamlPolicy(client *http.Client, route string, queryParams map[string]string,  configYaml *bytes.Buffer)(*http.Response, error){
 	request , err := http.NewRequest("POST", os.Getenv("MANO_URL")+route, configYaml);
 	if err !=nil {
 		log.Error("Error creating request to the Mano layer "+ route)
 		log.Error(err)
 		return nil, err
+	}
+	if queryParams != nil{
+		query := request.URL.Query()
+		for k, v := range queryParams {
+			query.Add(k,v)
+		}
 	}
 	request.Header.Add("Content-Type", "application/x-yaml")	
 	// creating http client to send request
