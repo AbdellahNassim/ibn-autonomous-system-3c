@@ -143,7 +143,7 @@ def generate_deploy_decision(logger, service, intent, resources):
     """
     # generate decision
     decision = {
-        "decision": "DEPLOYEMENT_DECISION",
+        "decision": "DEPLOYMENT_DECISION",
         "intent-id": intent['id'],
         "params": {
             "service": {

@@ -1,12 +1,22 @@
-FROM python:3.8-alpine
+FROM golang:1.18-alpine
 
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
+# copying the mod and sum files 
+COPY go.mod ./
+COPY go.sum ./
 
-COPY . .
+# Installing dependencies 
+RUN go mod download 
 
-EXPOSE 80
+# Copying all the files 
+COPY *.go ./
 
-ENTRYPOINT ["python3",  "app.py"]
+# Build the application 
+RUN go build -o policy-generator 
+
+
+EXPOSE 8080
+
+# RUNNING the application 
+CMD [ "./policy-generator" ]
