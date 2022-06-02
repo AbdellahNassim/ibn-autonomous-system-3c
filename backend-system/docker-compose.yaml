@@ -4,7 +4,7 @@ services:
     build:
       context: ./api-gateway
     ports:
-      - "8080:3000"
+      - "8080:8080"
     networks:
       - internal_network
       - default
@@ -15,9 +15,9 @@ services:
     networks:
       - internal_network
 
-  decision_maker:
+  intent_manager:
     build:
-      context: ./intent-decision-maker
+      context: ./intent_manager
     networks:
       - internal_network
 
