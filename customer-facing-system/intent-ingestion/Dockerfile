@@ -1,11 +1,11 @@
-FROM node:alpine
+FROM node:16-alpine
 
 #  Set Working Directory 
 WORKDIR /app
 
 # Copy package.json to install the dependencies
 COPY package.json ./
-COPY package-lock.json ./
+# COPY package-lock.json ./
 # Copy project code to the container 
 COPY ./ ./
 # Install dependencies 

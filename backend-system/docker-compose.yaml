@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3.5"
 services:
   api-gateway:
     build:
@@ -65,5 +65,4 @@ volumes:
 networks:
   internal_network:
   default:
-    name: proxy_frontend
     driver: bridge
