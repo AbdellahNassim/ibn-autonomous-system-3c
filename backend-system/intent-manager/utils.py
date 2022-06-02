@@ -18,7 +18,8 @@ def setup_logger():
     # set logger name
     log = logging.getLogger("Intent Manager")
     # Check if we are in debug mode
-    isDebug = bool(os.environ["DEBUG"])
+    
+    isDebug = ("DEBUG" in os.environ) and  bool(os.environ["DEBUG"])
     # by default ignore debug logs
     logging_level = logging.WARNING
     if isDebug:

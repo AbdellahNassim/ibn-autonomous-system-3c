@@ -2,6 +2,7 @@ version: "3.5"
 services:
   intent-ingestion:
     build: ./intent-ingestion
+    container_name: cfs-intent-ingestion
     ports:
       - "3000:3000"
     networks:
@@ -9,6 +10,7 @@ services:
 
   intent-recognition:
     build: ./intent-recognition-engine
+    container_name: cfs-intent-recognition
     ports:
       - "5005:5005"
     networks:
@@ -25,22 +27,18 @@ services:
       - recognition-network
 
   intent_store:
-    container_name: intent_store
+    container_name: cfs-intent_store
     image: postgres
     environment:
-      POSTGRES_USER: ${DATABASE_USER:-postgres}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-postgres}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
-    ports:
-      - "5432:5432"
     networks:
       - intent_store_network
     restart: unless-stopped
 
   intent_store_admin_panel:
-    container_name: intent_store_admin_panel
+    container_name: cfs-intent_store_admin_panel
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-akramboutouchent@gmail.com}
