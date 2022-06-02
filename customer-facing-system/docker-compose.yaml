@@ -3,6 +3,8 @@ services:
   intent-ingestion:
     build: ./intent-ingestion
     container_name: cfs-intent-ingestion
+    environment:
+      - INTENT_RECOGNITION_HOST=cfs-intent-recognition
     ports:
       - "3000:3000"
     networks:
@@ -30,7 +32,7 @@ services:
     container_name: cfs-intent_store
     image: postgres
     environment:
-      PGDATA: /data/postgres  
+      PGDATA: /data/postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: backend_kb

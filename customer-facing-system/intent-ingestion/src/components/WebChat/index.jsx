@@ -6,7 +6,7 @@ const WebChatWidget = () => {
   return (
     <div id="widget">
       <Widget
-        socketUrl={'http://localhost:5005'}
+        socketUrl={`http://${process.env['INTENT_RECOGNITION_HOST']?process.env['INTENT_RECOGNITION_HOST'] :'localhost' }:5005`}
         socketPath={'/socket.io/'}
         initPayload={'/greet'}
         title={'Brainy'}
