@@ -68,5 +68,5 @@ def get_models(model_id):
             return send_file('./production-models/{}'.format(model_file.name), mimetype="h5")
     return jsonify('No model with the model_id {}'.format(model_id))
 
-port = int(os.environ.get('PORT', 8000))
+port = int(os.environ.get('ML_MARKETPLACE_PORT', 8000))
 app.run(debug=True, host='0.0.0.0', port=port)

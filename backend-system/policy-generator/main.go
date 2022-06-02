@@ -57,8 +57,14 @@ func main() {
 		
 	})
 
-	// starting the router 
-	router.Run("localhost:8080")
+	if os.Getenv("POLICY_GENERATOR_PORT")!="" {
+		// starting the router 
+		router.Run("localhost:"+os.Getenv("POLICY_GENERATOR_PORT"))
+	}else{
+		// starting the router 
+		router.Run("localhost:8080")
+	}
+	
 }
 
 // check that environment variables were set 

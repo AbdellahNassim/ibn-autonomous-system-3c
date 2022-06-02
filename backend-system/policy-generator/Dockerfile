@@ -15,8 +15,10 @@ COPY *.go ./
 # Build the application 
 RUN go build -o policy-generator 
 
+ENV POLICY_GENERATOR_PORT 80
 
-EXPOSE 8080
+
+EXPOSE 80
 
 # RUNNING the application 
 CMD [ "./policy-generator" ]

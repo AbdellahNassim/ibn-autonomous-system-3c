@@ -72,26 +72,26 @@ def validate_intent_format(received_format, data, logger):
 
 def forward_intent(intent, logger):
     """
-        Forward the intent to the decision making component and return response 
+        Forward the intent to the intent manager and return response 
         This function acts like a reverse proxy 
         @params intent the intent in json format 
     """
-    # getting the url for the decision making component
-    DECISION_MAKING_API = os.environ["DECISION_MAKING_API"]
+    # getting the url for the intent manager
+    INTENT_MANAGER_HOST = os.environ["INTENT_MANAGER_HOST"]
     logger.info(
-        "Sending the received intent back to the decision making component")
-    # sending the received intent to the decision making
-    decision_making_response = requests.post(
-        DECISION_MAKING_API+"/intents", json=intent)
+        "Sending the received intent back to the intent manager")
+    # sending the received intent to the intent manager
+    intent_manager_response = requests.post(
+        INTENT_MANAGER_HOST+"/intents", json=intent)
     # As the service acts as a reverse proxy we should exclude the headers
     # About the inner connection details
     excluded_headers = ['content-encoding',
                         'content-length', 'transfer-encoding', 'connection']
-    headers = [(name, value) for (name, value) in decision_making_response.raw.headers.items()
+    headers = [(name, value) for (name, value) in intent_manager_response.raw.headers.items()
                if name.lower() not in excluded_headers]
     logger.info("Returning response back to client ")
     # returning response
-    response = Response(decision_making_response.content,
-                        decision_making_response.status_code, headers)
+    response = Response(intent_manager_response.content,
+                        intent_manager_response.status_code, headers)
     logger.info(response)
     return response

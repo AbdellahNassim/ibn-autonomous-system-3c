@@ -3,35 +3,65 @@ services:
   api-gateway:
     build:
       context: ./api-gateway
+    container_name: backend-api-gateway
+    restart: always
+    environment:
+      - DEBUG=0
+      - INTENT_MANAGER_HOST=http://intent_manager
     ports:
       - "8080:8080"
     networks:
       - internal_network
       - default
-
-  data_contextualize:
-    build:
-      context: ./data-contextualize
-    networks:
-      - internal_network
-
   intent_manager:
     build:
-      context: ./intent_manager
+      context: ./intent-manager
+    container_name: backend-intent-manager
+    restart: always
+    environment:
+      - DECISION_MAKER_INSTANCES=1
+      - POLICY_GENERATOR_HOST=http://policy_generator
+      # credentials of the knowledge base db
+      - DATABASE_USER=postgres
+      - DATABASE_NAME=backend_kb
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_HOST=knowledge_base_db
+      # Knowledge base ml marketplace
+      - ML_MARKET_PLACE_HOST=http://ml_marketplace
     networks:
       - internal_network
 
-  intent_monitor:
+  knowledge_base_db:
     build:
-      context: ./intent-monitor
+      context: ./knowledge-base
+    container_name: backend-knowledge-base
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
     networks:
       - internal_network
+
+  ml_marketplace:
+    build:
+      context: ./knowledge-base/ml_marketplace
+    container_name: backend-ml-marketplace
+    restart: always
+    networks:
+      - internal_network
+
   policy_generator:
     build:
       context: ./policy-generator
+    container_name: backend-policy-generator
+    environment:
+      - MANO_URL=http://localhost:8001
+    restart: always
     networks:
       - internal_network
 
+volumes:
+  pg_data:
 networks:
   internal_network:
   default:
