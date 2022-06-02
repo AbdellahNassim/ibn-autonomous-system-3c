@@ -98,6 +98,4 @@ ENV/
 # mypy
 .mypy_cache/
 
-# rasa cache 
-.rasa
-models/
+.rasa/
