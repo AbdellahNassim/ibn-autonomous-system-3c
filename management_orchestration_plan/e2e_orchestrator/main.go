@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
@@ -72,5 +73,11 @@ func main() {
 			})
 		}
 	})
-	router.Run("localhost:8001")
+	if os.Getenv("E2E_ORCHESTRATOR_PORT")!="" {
+		// starting the router 
+		router.Run("localhost:"+os.Getenv("E2E_ORCHESTRATOR_PORT"))
+	}else{
+		// starting the router 
+		router.Run("localhost:8001")
+	}
 }
