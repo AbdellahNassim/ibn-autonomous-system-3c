@@ -13,4 +13,4 @@ RUN rasa train
 USER 1001
 EXPOSE 5005
 # Run the rasa module and expose API
-CMD ["run","--enable-api","--cors","*","--debug" ,"--endpoints", "endpoints-docker.yml"]
+CMD ["run","-m", "models", "--enable-api","--cors","*","--debug" ,"--endpoints", "endpoints-docker.yml"]
