@@ -12,6 +12,9 @@ RUN go mod download
 # Copying all the files 
 COPY *.go ./
 
+# Copying templates also 
+COPY ./templates ./templates
+
 # Build the application 
 RUN go build -o policy-generator 
 

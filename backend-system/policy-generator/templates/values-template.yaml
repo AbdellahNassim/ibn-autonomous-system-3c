@@ -2,6 +2,7 @@ replicaCount: {{ .ApplicationReplicaCount }}
 
 # this represents the kube-ovn parameters
 network:
+  SubNetName: {{ .NetworkSubnetName}}
   podEgressRate: {{ .NetworkPodEgressRate}}
   podIngressRate: {{ .NetworkPodIngressRate}}
 
