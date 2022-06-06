@@ -6,7 +6,7 @@ services:
     container_name: backend-api-gateway
     restart: always
     environment:
-      - DEBUG=0
+      - DEBUG=1
       - INTENT_MANAGER_HOST=http://intent_manager
     ports:
       - "8080:8080"

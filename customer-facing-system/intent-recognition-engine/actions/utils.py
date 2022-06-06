@@ -6,6 +6,7 @@ from .database.models import *
 from .rdf.utils import *
 import datetime
 import requests
+import json
 
 def setup_logger():
     """
@@ -86,9 +87,9 @@ def send_intent_backend(logger, user_intent):
         raise Exception("Environment variable $BACKEND_URL was not set ")
     backend_url = os.environ["BACKEND_URL"]
     # send intent to backend service 
-    logger.info("Sending standardized intent to backend "+backend_url+"/deploy")
-    print(standard_intent)
-    response = requests.post(backend_url+"/deploy",json={"intent":standard_intent})
+    logger.info("Sending standardized intent to backend "+backend_url)
+    standard_intent = json.loads(standard_intent)
+    response = requests.post(backend_url,json=standard_intent)
     if response.status_code !=200:
         raise Exception(f"An error occurred while sending the intent {response.status_code} was received")
     logger.info("Intent sent successfully ")
