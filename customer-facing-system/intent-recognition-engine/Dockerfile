@@ -8,7 +8,7 @@ COPY . /app
 
 USER root 
 # Train model 
-#RUN rasa train
+RUN rasa train
 
 USER 1001
 EXPOSE 5005

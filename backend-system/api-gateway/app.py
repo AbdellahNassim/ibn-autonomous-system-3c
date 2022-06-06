@@ -22,6 +22,7 @@ def services():
     if request.content_type == "application/json":
         logger.info("Received intent in json format")
         # validate the intent format (rdf)
+        print(request.get_json())
         intent_validated = validate_intent_format(
             'json', request.get_json(), logger)
         # check if it's valid

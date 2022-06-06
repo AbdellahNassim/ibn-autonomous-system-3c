@@ -50,7 +50,9 @@ def search_models():
             return jsonify(error="No model could be found with the requested service")
         # Loop then on the models of the category 
         for model in category_models["available_models"]:
-            if model["input"] == model_request_data["input"]:
+            model_inputs = model["input"].sort()
+            model_request_data_inputs = model_request_data["input"].sort()  
+            if model_inputs == model_request_data_inputs:
                 return jsonify(model)
     return jsonify(error="No model could be found with the requested parameters")
 

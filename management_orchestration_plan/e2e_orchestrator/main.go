@@ -75,9 +75,9 @@ func main() {
 	})
 	if os.Getenv("E2E_ORCHESTRATOR_PORT")!="" {
 		// starting the router 
-		router.Run("localhost:"+os.Getenv("E2E_ORCHESTRATOR_PORT"))
+		router.Run(":"+os.Getenv("E2E_ORCHESTRATOR_PORT"))
 	}else{
 		// starting the router 
-		router.Run("localhost:8001")
+		router.Run(":8001")
 	}
 }

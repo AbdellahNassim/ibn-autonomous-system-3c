@@ -6,7 +6,7 @@ services:
     container_name: backend-api-gateway
     restart: always
     environment:
-      - DEBUG=0
+      - DEBUG=1
       - INTENT_MANAGER_HOST=http://intent_manager
     ports:
       - "8080:8080"
@@ -19,6 +19,7 @@ services:
     container_name: backend-intent-manager
     restart: always
     environment:
+      - DEBUG=1
       - DECISION_MAKER_INSTANCES=1
       - POLICY_GENERATOR_HOST=http://policy_generator
       # credentials of the knowledge base db
@@ -55,9 +56,10 @@ services:
       context: ./policy-generator
     container_name: backend-policy-generator
     environment:
-      - MANO_URL=http://localhost:8001
+      - MANO_URL=http://13.93.7.67:8001
     restart: always
     networks:
+      - default
       - internal_network
 
 volumes:

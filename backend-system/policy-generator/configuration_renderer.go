@@ -130,7 +130,8 @@ func CompCachingConfigRenderer(config *ServiceDeploymentConfiguration)(bytes.Buf
 	}
 	// template file read successfully 
 	// creating templates data 
-	subnetTemplateData := map[string]int32{
+	subnetTemplateData := map[string]any{
+                "NetworkSubnetName": config.IntentId +"-subnet",
 		"NetworkPodEgressRate": config.NetworkEgressRate,
 		"NetworkPodIngressRate": config.NetworkIngressRate,
 		"CpuLimits": config.CpuLimits,

@@ -77,6 +77,7 @@ def fetch_model_marketplace(logger, intent):
         "is_trained": True,
         "format": "h5"
     }
+    logger.info(data)
     # sending search request for model
     response = requests.get(
         os.environ['ML_MARKET_PLACE_HOST']+'/models/search', json=data)
@@ -86,6 +87,7 @@ def fetch_model_marketplace(logger, intent):
     else:
         # We have now received a search result
         search_result = response.json()
+        logger.info(search_result)
         # get the model id to be used to fetch model
         model_id = search_result['model_id']
 

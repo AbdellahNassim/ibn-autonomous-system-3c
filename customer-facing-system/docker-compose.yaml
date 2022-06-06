@@ -4,7 +4,7 @@ services:
     build: ./intent-ingestion
     container_name: cfs-intent-ingestion
     environment:
-      - REACT_APP_INTENT_RECOGNITION_HOST=
+      - REACT_APP_INTENT_RECOGNITION_HOST=13.93.7.67
     ports:
       - "3000:3000"
     networks:

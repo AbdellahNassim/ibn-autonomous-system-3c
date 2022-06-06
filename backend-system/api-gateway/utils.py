@@ -41,8 +41,14 @@ def validate_intent_format(received_format, data, logger):
         #todo enhance this function to verify if the rdf is an intent 
     """
     if received_format == "json":
+        logger.info("Data before being dumped")
+        logger.info(data)
+        logger.info(type(data))
         # dump it to a string json
         received_intent_json = json.dumps(data)
+        logger.info("Data after being dumped")
+        logger.info(received_intent_json)
+        logger.info(type(received_intent_json))
         # creating a graph back
         g = Graph()
         # parsing the format
