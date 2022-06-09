@@ -9,7 +9,7 @@ const NavBar = ()=>{
     <Disclosure as="nav" className="z-10 w-full bg-black-lighter ">
       {({open}) => (
         <>
-          <div className="max-w-7xl px-4 sm:px-8 lg:px-8">
+          <div className=" px-6 sm:px-12 lg:px-12">
             <div className="relative w-full flex flex-row justify-center
             sm:justify-between h-14  sm:h-20 sm:pt-4">
               <div className="w-16 lg:block hidden">
@@ -41,19 +41,24 @@ const NavBar = ()=>{
                                 SCORING System
                 </h1>
               </div>
-              <div className="hidden sm:flex flex-row space-x-5
-               md:space-x-8 pt-2 mx-2">
+              <div className="hidden sm:flex flex-row items-center space-x-5
+               md:space-x-8  mx-2">
                 {Navigations.map((item, index) => (
                   <a
                     id={`${index}`}
                     href={item.href}
                     key={index}
                     className="text-white-lighter text-lg
-                     md:text-xl lg:text-2xl hover:text-black-default"
+                     md:text-lg lg:text-xl hover:text-black-default"
                   >
                     {item.title}
                   </a>
                 ))}
+              </div>
+              <div className="hidden sm:flex flex-row text-center items-center">
+                <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white-default text-lg font-bold py-1 px-4 rounded-md" href="/login">
+                    Login
+                </a>
               </div>
             </div>
           </div>

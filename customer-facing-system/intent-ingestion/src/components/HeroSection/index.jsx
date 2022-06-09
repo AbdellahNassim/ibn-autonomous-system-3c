@@ -2,7 +2,7 @@ import React from 'react';
 const HeroSection = ()=>{
   return (
     <div className="flex content-center
-    items-center justify-center h-screen bg-black-lighter">
+    items-center justify-center h-full bg-black-lighter">
       <div className="flex flex-col w-6/12 text-center">
         <h1 className="text-white-lighter text-7xl font-semibold">
             Your story starts with an intent.
