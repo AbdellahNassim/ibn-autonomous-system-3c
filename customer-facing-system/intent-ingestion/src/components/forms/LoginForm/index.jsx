@@ -1,3 +1,5 @@
+import {Formik} from 'formik';
+import {loginUser} from '../../../adapters/auth';
 
 // eslint-disable-next-line valid-jsdoc
 /**
@@ -17,32 +19,76 @@ export default function LoginForm() {
       </div>
 
       <div className=" flex flex-col w-full items-center justify-center h-full">
-        <form className=" w-3/4">
 
-          <div className="bg-white w-full pb-8 mb-4 flex flex-col">
-            <div className="mb-4">
-              <label className="block text-white-lighter text-lg font-bold mb-2" htmlFor="username">
-                  Username
-              </label>
-              <input className="shadow appearance-none border rounded w-full py-2 px-3 text-white-lighter" id="username" type="text" placeholder="Username"/>
+        <Formik
+          initialValues={{username: '', password: ''}}
+          validate={(values) => {
+            const errors = {};
+            if (!values.username) {
+              errors.username = 'Username required';
+            }
+            if (!values.password) {
+              errors.password = 'Password required';
+            }
+            return errors;
+          }}
+          onSubmit={async (values, {setSubmitting}) => {
+            await loginUser(values.username, values.password);
+          }}
+
+        >{({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isSubmitting,
+          /* and other goodies */
+          }) => (<form className=" w-3/4" onSubmit={handleSubmit}>
+
+            <div className="bg-white w-full pb-8 mb-4 flex flex-col">
+              <div className="mb-4">
+                {console.log(errors)}
+                <label className="block text-white-lighter text-lg font-bold mb-2" htmlFor="username">
+                Username
+                </label>
+                <input className="appearance-none rounded w-full py-2 px-3"
+                  id="username"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.username}
+                  type="text" placeholder="Username"/>
+                <p className=" text-black-default text-sm">{errors.username && touched.username && errors.username}</p>
+              </div>
+              <div className="mb-6">
+                <label className="block text-white-lighter text-lg font-bold mb-2" htmlFor="password">
+              Password
+                </label>
+                <input className="appearance-none border border-red rounded w-full py-2 px-3  mb-3"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                  id="password"
+                  type="password"
+                  placeholder="******************"/>
+                <p className=" text-black-default text-sm">{errors.password && touched.password && errors.password}</p>
+              </div>
+              <div className="flex items-center justify-between">
+                <button className=" bg-white-lighter  text-white font-bold py-2 px-4 rounded"
+                  disabled={isSubmitting}
+                  type="submit">
+                    Sign In
+                </button>
+                <a className="inline-block align-baseline font-bold text-lg text-white-lighter " href="#">
+                    Forgot Password?
+                </a>
+              </div>
             </div>
-            <div className="mb-6">
-              <label className="block text-white-lighter text-lg font-bold mb-2" htmlFor="password">
-                Password
-              </label>
-              <input className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-white-lighter mb-3" id="password" type="password" placeholder="******************"/>
-              <p className=" text-black-default text-sm">Please choose a password.</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <button className=" bg-white-lighter hover:bg-blue-dark text-white font-bold py-2 px-4 rounded" type="button">
-                Sign In
-              </button>
-              <a className="inline-block align-baseline font-bold text-lg text-white-lighter " href="#">
-                Forgot Password?
-              </a>
-            </div>
-          </div>
-        </form>
+          </form>)}
+
+        </Formik>
+
       </div>
 
       <div>

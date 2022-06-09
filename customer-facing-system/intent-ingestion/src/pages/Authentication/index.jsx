@@ -19,7 +19,7 @@ function Auth() {
         >
           <div className="flex flex-col w-3/5 rounded-2xl "
             style={{
-              background: 'rgba(255, 255, 255, 0.18)',
+              background: 'rgba(255, 255, 255, 0.2)',
               boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
