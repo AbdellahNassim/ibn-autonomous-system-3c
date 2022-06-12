@@ -1,5 +1,6 @@
 import {Formik} from 'formik';
 import adapters from '../../../adapters';
+import {useAuth} from '../../../utils/auth';
 
 // eslint-disable-next-line valid-jsdoc
 /**
@@ -7,6 +8,9 @@ import adapters from '../../../adapters';
  * @return Return the login form component
  */
 export default function LoginForm() {
+  // get auth global state
+  const auth = useAuth();
+
   return (
     <div className="bg-primary-500 h-full flex flex-col items-center p-9">
       <div className="flex flex-col items-start mt-16">
@@ -36,10 +40,13 @@ export default function LoginForm() {
             try {
               // login user
               const loginResponse = await adapters.loginUser(values.username, values.password);
-              // set item in the storage
-              localStorage.setItem('TOKEN', loginResponse.data.token);
+              // get user token
+              const userToken = loginResponse.data.token;
+              // sign in user
+              auth.signIn(userToken);
               setSubmitting(false);
             } catch (error) {
+              console.log(error);
               if (error.response.status===401) {
                 setErrors({
                   loginStatus: 'Invalid Credentials',
