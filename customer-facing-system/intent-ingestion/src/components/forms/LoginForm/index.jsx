@@ -12,9 +12,9 @@ export default function LoginForm() {
   const auth = useAuth();
 
   return (
-    <div className="bg-primary-500 h-full flex flex-col items-center p-9">
-      <div className="flex flex-col items-start mt-16">
-        <h1 className=" text-5xl text-white-lighter mt-12">
+    <div className="bg-primary-500 h-full flex flex-col items-center justify-between p-4  md:p-9">
+      <div className="flex flex-col items-start justify-around mt-12 ">
+        <h1 className=" text-2xl sm:text-3xl md:text-5xl text-white-lighter ">
             Hello ! Welcome Back
         </h1>
         <p className="text-center w-10/12 text-white-lighter mt-8 font-light">

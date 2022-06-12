@@ -10,7 +10,7 @@ import BgCity from '../../assets/bg-city.jpg';
  */
 function Auth() {
   return (
-    <Layout className={'h-screen'}>
+    <Layout className={'h-screen overflow-hidden'}>
       <div className="flex flex-row h-full">
         <div className=" hidden md:w-4/6 sm:flex justify-center h-full items-center"
           style={{
@@ -26,19 +26,19 @@ function Auth() {
             }}
           >
             <div className=" flex flex-col items-center justify-center">
-              <div className="w-64">
+              <div className=" w-40 lg:w-64">
                 <img src={ScoringLogo} alt="SCORING" />
               </div>
-              <div className="mt-8 text-white-lighter text-center font-bold w-11/12 text-2xl">
+              <div className="mt-8 text-white-lighter text-center font-bold w-11/12 text-lg lg:text-2xl">
                 <p><span className=" text-primary-400">S</span>mart <span className=" text-primary-400">C</span>ollaborative c<span className=" text-primary-400">O</span>mputing, caching and netwo<span className=" text-primary-400">R</span>ing parad<span className=" text-primary-400">I</span>gm for <span className=" text-primary-400">N</span>ext <span className=" text-primary-400">G</span>eneration communication infrastructures</p>
               </div>
             </div>
             <div className="flex flex-col justify-end mt-16">
               <div className="flex-1 flex flex-row justify-center mb-12">
-                <div className=" w-40 mr-8">
+                <div className=" w-32 lg:w-40 mr-8">
                   <img src={ChisteraLogo} />
                 </div>
-                <div className=" w-20">
+                <div className=" w-16 lg:w-20">
                   <img src={L3iLogo} />
                 </div>
               </div>

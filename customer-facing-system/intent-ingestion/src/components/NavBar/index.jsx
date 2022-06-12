@@ -3,8 +3,12 @@ import {Disclosure} from '@headlessui/react';
 import {MenuIcon, XIcon} from '@heroicons/react/outline';
 import Navigations from './navigation-data.json';
 import ScoringLogo from '../../assets/scoring_logo.png';
+import {useAuth} from '../../utils/auth';
 
 const NavBar = ()=>{
+  const auth = useAuth();
+
+
   return (
     <Disclosure as="nav" className="z-10 w-full bg-black-lighter ">
       {({open}) => (
@@ -56,9 +60,20 @@ const NavBar = ()=>{
                 ))}
               </div>
               <div className="hidden sm:flex flex-row text-center items-center">
-                <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white-default text-lg font-bold py-1 px-4 rounded-md" href="/login">
+                {
+                  // check if we have a connected user
+                  auth.getCurrentUser() ?
+                  <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white-default text-lg font-bold py-1 px-4 rounded-md"
+                    href="/dashboard">
+                    Dashboard
+                  </a>:
+                  <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white-default text-lg font-bold py-1 px-4 rounded-md"
+                    href="/login">
                     Login
-                </a>
+                  </a>
+
+                }
+
               </div>
             </div>
           </div>
