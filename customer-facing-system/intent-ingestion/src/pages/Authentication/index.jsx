@@ -26,10 +26,10 @@ function Auth() {
             }}
           >
             <div className=" flex flex-col items-center justify-center">
-              <div className=" w-40 lg:w-64">
+              <div className=" w-40 lg:w-56">
                 <img src={ScoringLogo} alt="SCORING" />
               </div>
-              <div className="mt-8 text-white-lighter text-center font-bold w-11/12 text-lg lg:text-2xl">
+              <div className=" mt-14 text-white text-center font-bold w-11/12 text-lg lg:text-2xl">
                 <p><span className=" text-primary-400">S</span>mart <span className=" text-primary-400">C</span>ollaborative c<span className=" text-primary-400">O</span>mputing, caching and netwo<span className=" text-primary-400">R</span>ing parad<span className=" text-primary-400">I</span>gm for <span className=" text-primary-400">N</span>ext <span className=" text-primary-400">G</span>eneration communication infrastructures</p>
               </div>
             </div>

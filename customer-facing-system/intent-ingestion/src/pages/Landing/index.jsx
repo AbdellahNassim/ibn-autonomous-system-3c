@@ -1,5 +1,5 @@
 import HeroSection from '../../components/HeroSection';
-import Layout from '../../layouts/Landing';
+import Layout from '../../layouts/TopNavbarLayout';
 
 /**
  *
@@ -7,7 +7,7 @@ import Layout from '../../layouts/Landing';
  */
 function Landing() {
   return (
-    <Layout className={'h-screen'}>
+    <Layout className={'h-screen overflow-hidden'}>
       <HeroSection></HeroSection>
     </Layout>
   );

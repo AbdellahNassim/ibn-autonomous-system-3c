@@ -29,12 +29,12 @@ const NavBar = ()=>{
                   <span className="sr-only">Open main menu</span>
                   {open ? (
                     <XIcon
-                      className="block h-6 w-6 text-white-lighter"
+                      className="block h-6 w-6  text-white"
                       aria-hidden="true"
                     />
                     ) : (
                     <MenuIcon
-                      className="block h-6 w-6 text-white-lighter"
+                      className="block h-6 w-6  text-white"
                       aria-hidden="true"
                     />
                           )}
@@ -52,7 +52,7 @@ const NavBar = ()=>{
                     id={`${index}`}
                     href={item.href}
                     key={index}
-                    className="text-white-lighter text-lg
+                    className=" text-white text-lg
                      md:text-lg lg:text-xl hover:text-black-default"
                   >
                     {item.title}
@@ -63,11 +63,11 @@ const NavBar = ()=>{
                 {
                   // check if we have a connected user
                   auth.getCurrentUser() ?
-                  <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white-default text-lg font-bold py-1 px-4 rounded-md"
+                  <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white text-lg font-bold py-1 px-4 rounded-md"
                     href="/dashboard">
                     Dashboard
                   </a>:
-                  <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white-default text-lg font-bold py-1 px-4 rounded-md"
+                  <a className=" bg-primary-500 cursor-pointer hover:bg-primary-800 text-white text-lg font-bold py-1 px-4 rounded-md"
                     href="/login">
                     Login
                   </a>
@@ -85,7 +85,7 @@ const NavBar = ()=>{
                   href={item.href}
                   className={` block hover:text-black-default px-3 pb-2 
                   rounded-md text-base font-medium text-center 
-                  text-white-lighter `}
+                   text-white `}
                   aria-current={item.current ? 'page' : undefined}
                 >
                   {item.title}
