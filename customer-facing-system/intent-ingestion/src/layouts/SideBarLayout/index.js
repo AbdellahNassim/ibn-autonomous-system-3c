@@ -4,7 +4,7 @@ import Header from '../../components/DashboardHeader';
 
 const Layout = ({className, children})=>{
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  console.log(sidebarOpen);
   return (
     <div className={`${className} flex`}>
 
@@ -15,7 +15,7 @@ const Layout = ({className, children})=>{
       <div>
 
         {/** Main Area Header */}
-        <Header></Header>
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
 
         {/** Main content  */}
         <main>

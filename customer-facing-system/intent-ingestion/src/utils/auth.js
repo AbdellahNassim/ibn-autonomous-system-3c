@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Navigate, useLocation} from 'react-router-dom';
-
+import jwtDecode from 'jwt-decode';
 
 // creating a react context for saving auth state
 const AuthContext = React.createContext(null);
@@ -17,7 +17,8 @@ export function AuthProvider({children}) {
    * @return {*} user
    */
   const getCurrentUser = ()=>{
-    return localStorage.getItem('user');
+    const currentUserString = localStorage.getItem('user');
+    return JSON.parse(currentUserString);
   };
 
 
@@ -25,9 +26,11 @@ export function AuthProvider({children}) {
 
   /**
    * signIn function to allow changing the auth state
-   * @param {*} user
+   * @param {*} userToken jwt token received from authenticator
    */
-  const signIn= (user)=>{
+  const signIn= (userToken)=>{
+    // decode the token and save it in local storage
+    const user= JSON.stringify(jwtDecode(userToken));
     localStorage.setItem('user', user);
     setCurrentUser(user);
   };
