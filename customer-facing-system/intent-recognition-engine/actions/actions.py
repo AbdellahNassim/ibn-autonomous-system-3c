@@ -1,17 +1,15 @@
 from typing import Any, Text, Dict, List
-
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, FollowupAction, ActiveLoop
 from rasa_sdk.forms import FormValidationAction
 from rasa_sdk.types import DomainDict
-from .utils import setup_logger, save_intent, send_intent_backend
-from .database.utils import create_session
+from .utils import setup_logger, send_entities
 
 class ActionProcessIntent(Action):
     """
         This class is an action that will be executed once the intent has been identified
-        It gets the extracted entities and compose an intent and then save it. 
+        It gets the extracted entities, and forward them to the intent owner 
     """
     
     def name(self) -> Text:
@@ -23,24 +21,18 @@ class ActionProcessIntent(Action):
         
         # get logger
         logger = setup_logger()
+        logger.info(tracker.current_state())
         logger.info("Received Action to process intent")
-        # connect to database and create a session
-        session = create_session(logger)
         # get values from the tracker
         user_intent = {
             "service_type":tracker.get_slot('service'),
             "latency":tracker.get_slot('latency'),
             "resolution":tracker.get_slot('resolution'),
-            # This is just a mockup until we implement the user authentication
-            # TODO 
-            "user_id":1
         }
-        # save the intent in the intent store 
+        # send the extracted entities to the intent owner 
         try:
-            save_intent(session, logger, user_intent)
-            # once the intent saved in intent store
-            # we send it to be deployed
-            send_intent_backend(logger, user_intent)
+            send_entities(logger, user_intent)
+            # we report back to the user that the intent will be sent
             dispatcher.utter_message(response='utter_service_will_be_deployed')
         except Exception as e:
             logger.error(str(e))

@@ -62,16 +62,12 @@ def initiate_db(logger, engine):
 
 def seed_db(logger, session):
     """
-        Seeding database with an initial user and a service type
-        #todo Just for testing 
+        Seeding database with  a service type
     """
-    # Creating user 
-    user = User(username="akram09", password="c8fed00eb2e87f1cee8e90ebbe870c190ac3848c")
+
     # Creating Service Type
     service_type = ServiceType(name="video", provider_name="Netflix", provider_url="https://netflix.com")
 
-    # persisting 
-    session.add(user)
     session.add(service_type)
     
     # commit the transaction 

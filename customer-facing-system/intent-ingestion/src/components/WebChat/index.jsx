@@ -3,7 +3,10 @@ import Widget from 'rasa-webchat';
 import '../../index.scss';
 import BrainyPdP from '../../assets/BrainyPdp.png';
 import StartIcon from '../../assets/shuttle.png';
+import {useAuth} from '../../utils/auth';
+
 const WebChatWidget = () => {
+  const auth = useAuth();
   return (
     <div id="widget">
       <Widget
@@ -14,6 +17,7 @@ const WebChatWidget = () => {
         autoClearCache={true}
         subtitle={'Your Virtual Assistant'}
         embedded={false}
+        customData={{user: auth.getCurrentUser()}}
         profileAvatar={BrainyPdP}
         showMessageDate={true}
         openLauncherImage={StartIcon}

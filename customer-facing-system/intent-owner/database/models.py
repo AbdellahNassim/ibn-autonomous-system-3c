@@ -30,6 +30,7 @@ class Intent(Base):
     service_id = Column(Integer, ForeignKey('service.id'))
     request_date = Column(DateTime, default=datetime.datetime.utcnow)
     delivery_status = Column(String, nullable=False)
+    standard_format = Column(String, nullable=False)
 
     ## Relationships
     # This will allow us to have intent.user() and get all the intents of a user
