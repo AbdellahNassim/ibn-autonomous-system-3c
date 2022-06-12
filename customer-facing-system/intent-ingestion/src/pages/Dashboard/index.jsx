@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import Layout from '../../layouts/SideBarLayout';
 import {useLocation} from 'react-router-dom';
+import WebChat from '../../components/WebChat';
+import IntentTable from '../../components/IntentTable';
 
 /**
  * Dashboard Home component
@@ -22,8 +24,9 @@ export default function Dashboard() {
 
   return (
     <Layout className="h-screen overflow-hidden">
-      <div>
-         Heyyy
+      <div className="grid grid-cols-12 gap-6">
+        <IntentTable/>
+        <WebChat/>
       </div>
     </Layout>);
 }

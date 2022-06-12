@@ -12,7 +12,7 @@ const Layout = ({className, children})=>{
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Main Content Area */}
-      <div>
+      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
 
         {/** Main Area Header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
