@@ -42,6 +42,7 @@ httptools==0.4.0
 humanfriendly==10.0
 idna==3.3
 importlib-metadata==4.11.3
+isodate==0.6.1
 jmespath==1.0.0
 joblib==1.0.1
 jsonpickle==2.0.0
@@ -80,6 +81,7 @@ pyrsistent==0.18.1
 pyTelegramBotAPI==3.8.3
 python-crfsuite==0.9.8
 python-dateutil==2.8.2
+python-dotenv==0.20.0
 python-engineio==4.3.2
 python-socketio==5.6.0
 pytz==2021.3
@@ -88,6 +90,7 @@ questionary==1.10.0
 randomname==0.1.5
 rasa==3.1.0
 rasa-sdk==3.1.1
+rdflib==6.1.1
 redis==3.5.3
 regex==2021.8.28
 requests==2.27.1

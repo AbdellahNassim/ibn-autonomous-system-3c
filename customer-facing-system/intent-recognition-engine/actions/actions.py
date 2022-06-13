@@ -21,7 +21,6 @@ class ActionProcessIntent(Action):
         
         # get logger
         logger = setup_logger()
-        logger.info(tracker.current_state())
         logger.info("Received Action to process intent")
         # get values from the tracker
         user_intent = {
