@@ -16,6 +16,7 @@ logger = setup_logger()
 # enable cors to allow access from the intent ingestion
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
+app.config['Access-Control-Allow-Origin'] = '*'
 
 
 
@@ -26,7 +27,6 @@ def hello():
 
 
 @app.route('/auth/login', methods=['POST'])
-@cross_origin()
 def login_user():
     """
         Api route to allow user to login with credentials 

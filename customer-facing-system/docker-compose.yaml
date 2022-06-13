@@ -4,65 +4,97 @@ services:
     build: ./intent-ingestion
     container_name: cfs-intent-ingestion
     environment:
-      - REACT_APP_INTENT_RECOGNITION_HOST=13.93.7.67
+      - REACT_APP_INTENT_RECOGNITION_HOST=10.13.17.219
+      - REACT_APP_CUSTOMER_AUTHENTICATOR=http://10.13.17.219:8000
     ports:
       - "3000:3000"
+    restart: unless-stopped
     networks:
-      - ingestion-network
+      - external_network
 
   intent-recognition:
-    build: ./intent-recognition-engine
+    image: rasa/rasa:3.1.1-full
     container_name: cfs-intent-recognition
+    volumes:
+      - ./intent-recognition-engine/:/app
     ports:
       - "5005:5005"
+    command:
+      - run
+      - -m
+      - models
+      - --enable-api
+      - --cors
+      - "*"
+      - --debug
+      - --endpoints
+      - endpoints-docker.yml
     networks:
-      - recognition-network
+      - internal_network
+    restart: unless-stopped
 
   intent-recognition-actions:
-    container_name: actions_server
-    build: ./intent-recognition-engine/actions
+    container_name: cfs-actions_server
+    build: ./intent-recognition-engine/actions/
     volumes:
       - "./intent-recognition-engine/actions:/app/actions"
-    ports:
-      - "5055:5055"
     networks:
-      - recognition-network
+      - internal_network
+    restart: unless-stopped
 
+  customer_authenticator:
+    container_name: cfs-customer_authenticator
+    build: ./customer-authenticator
+    environment:
+      - DEBUG=1
+      - CUSTOMER_AUTHENTICATOR_PORT=8000
+      - DATABASE_USER=postgres
+      - DATABASE_NAME=intent_store
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_HOST=intent_store
+    networks:
+      - internal_network
+      - external_network
+    depends_on:
+      - intent_store
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  intent_owner:
+    container_name: cfs-intent_owner
+    build: ./intent-owner
+    environment:
+      - DEBUG=1
+      - INTENT_OWNER_PORT=8001
+      - BACKEND_URL=http://127.0.0.1:8080
+      - DATABASE_USER=postgres
+      - DATABASE_NAME=intent_store
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_HOST=intent_store
+    depends_on:
+      - intent_store
+    networks:
+      - internal_network
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
   intent_store:
     container_name: cfs-intent_store
-    image: postgres
-    environment:
-      PGDATA: /data/postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: backend_kb
+    build:
+      context: ./intent_store
     volumes:
       - postgres:/data/postgres
     networks:
-      - intent_store_network
-    restart: unless-stopped
-
-  intent_store_admin_panel:
-    container_name: cfs-intent_store_admin_panel
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-akramboutouchent@gmail.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: "False"
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "${PGADMIN_PORT:-5050}:80"
-    networks:
-      - intent_store_network
+      - internal_network
     restart: unless-stopped
 
 networks:
-  ingestion-network:
-  recognition-network:
-  intent_store_network:
+  internal_network:
+  external_network:
     driver: bridge
 
 volumes:
   postgres:
-  pgadmin:

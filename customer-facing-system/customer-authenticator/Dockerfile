@@ -21,9 +21,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-# setting env variable of the port 
-ENV INTENT_MANAGER_PORT=80
-
-EXPOSE 80
+ENV JWT_SECRET=c7b69ec3f4fdd528d0ae37fd13235779
 
 ENTRYPOINT ["python3",  "app.py"]
