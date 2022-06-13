@@ -1,6 +1,8 @@
-import HeroSection from './components/HeroSection';
-import Layout from './components/layout';
-import WebChatWidget from './components/WebChat';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Auth from './pages/Authentication';
+import LandingPage from './pages/Landing';
+import Dashboard from './pages/Dashboard';
+import {AuthProvider, AuthGuard} from './utils/auth';
 
 /**
  *
@@ -8,10 +10,19 @@ import WebChatWidget from './components/WebChat';
  */
 function App() {
   return (
-    <Layout>
-      <HeroSection></HeroSection>
-      <WebChatWidget></WebChatWidget>
-    </Layout>
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path='/' element={ <LandingPage/> }/>
+          <Route path="/login" element={ <Auth/>} />
+          <Route path="/dashboard" element={
+            <AuthGuard redirectTo="/login">
+              <Dashboard/>
+            </AuthGuard>
+          }/>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

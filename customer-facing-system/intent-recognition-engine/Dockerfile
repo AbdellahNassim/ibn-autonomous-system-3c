@@ -6,14 +6,12 @@ WORKDIR /app
 # Copy all configurations 
 COPY . /app
 
-
+USER root
 RUN pip install -r  requirements.txt
 
 
-USER root 
-# Train model 
-RUN rasa train
-
+RUN rasa train 
+USER 1000
 
 
 EXPOSE 5005

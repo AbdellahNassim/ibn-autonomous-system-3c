@@ -8,10 +8,16 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.27.2",
+    "formik": "^2.2.9",
+    "jwt-decode": "^3.1.2",
     "rasa-webchat": "^1.0.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "react-transition-group": "^4.4.2",
+    "sass": "^1.52.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -40,6 +46,7 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.2",
     "autoprefixer": "^10.4.4",
     "eslint": "^8.13.0",
     "eslint-config-google": "^0.14.0",
