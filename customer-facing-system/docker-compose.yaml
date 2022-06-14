@@ -58,7 +58,7 @@ services:
     environment:
       - DEBUG=1
       - INTENT_OWNER_PORT=8001
-      - BACKEND_URL=http://127.0.0.1:8080
+      - BACKEND_URL=http://51.145.254.19:8080
 
       - DATABASE_USER=postgres
       - DATABASE_NAME=intent_store

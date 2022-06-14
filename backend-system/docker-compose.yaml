@@ -56,7 +56,7 @@ services:
       context: ./policy-generator
     container_name: backend-policy-generator
     environment:
-      - MANO_URL=http://13.93.7.67:8001
+      - MANO_URL=http://51.145.254.19:8001
     restart: always
     networks:
       - default
