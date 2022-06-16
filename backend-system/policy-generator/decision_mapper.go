@@ -86,7 +86,7 @@ func HandleServiceDeploy(decision *ServiceDeploymentDecision) (any, error){
 	// mapping the decision into a configuration object to be processed 
 	deploymentConfiguration := ServiceDeploymentConfiguration{
 		IntentId: decision.IntentId, 
-		Namespace: decision.IntentId,
+		Namespace: "default",
 		NetworkSubnetCidr: "10.10.0.0/16",
 		NetworkGatewayIp: "10.10.0.1",
 		NetworkIngressRate: decision.Params.Resources.Network,
