@@ -17,8 +17,6 @@ resources:
     memory: {{ .MemoryLimits }}Mi
     ephemeral-storage: {{ .StorageLimits }}Mi
   requests:
-    cpu: {{ .CpuRequests }}m
-    memory: {{ .MemoryRequests }}Mi
     ephemeral-storage: {{ .StorageRequests }}Mi
 
 
