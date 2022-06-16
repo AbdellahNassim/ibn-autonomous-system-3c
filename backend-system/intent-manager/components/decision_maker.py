@@ -130,8 +130,8 @@ def execute_model_intent_params(logger, model, intent):
     # make predictions
     results = np.rint(model.predict(model_input))
     mapped_results = {
-        "cpu": 1800,
-        "memory": 400,
+        "cpu": 1400,
+        "memory": 1500,
         "network": 60,
         "storage": int(results[0][3]),
     }
