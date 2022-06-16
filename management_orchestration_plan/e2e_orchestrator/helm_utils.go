@@ -42,7 +42,7 @@ func DeployApplication(app *HelmApplication, valuesYaml string)(error){
 
 func InstallApplication(app *HelmApplication)(error){
 	log.Info("Installing the application chart")
-	out, err:= exec.Command("helm", "install","-f","/tmp/values.yaml", app.Name, app.Repository+"/"+app.ChartName, "-n", app.Namespace).Output()
+	out, err:= exec.Command("helm", "install","-f","/tmp/values.yaml", app.Name, app.Repository+"/"+app.ChartName, "-n", "default").Output()
     if err != nil {
         log.Error(err)
 		return err
