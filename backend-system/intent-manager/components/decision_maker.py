@@ -131,8 +131,8 @@ def execute_model_intent_params(logger, model, intent):
     results = np.rint(model.predict(model_input))
     mapped_results = {
         "cpu": 1800,
-        "memory": int(results[0][1]),
-        "network": int(results[0][2]),
+        "memory": 400,
+        "network": 60,
         "storage": int(results[0][3]),
     }
     logger.info("Predicted resources are as follow {}".format(mapped_results))
