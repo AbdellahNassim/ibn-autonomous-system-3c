@@ -37,7 +37,7 @@ responses:
     - text: "I don't understand what you want."
 
   utter_service_will_be_deployed:
-    - text: "Everything set, The service will be deployed at 52.174.121.213:31000"
+    - text: "Everything set, The service will be deployed at 52.136.217.17:31000"
 
   utter_goodbye:
     - text: "Bye"
