@@ -176,3 +176,13 @@ nlu:
       - [640x480](resolution)
       - [1280x720](resolution)
       - [1920x1080](resolution)
+
+  # Adding synonymes here
+  - synonym: video
+    examples: |
+      - vidoe
+      - viode
+      - viedo
+      - 360 video 
+      - video 360
+      - 360video
