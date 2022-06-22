@@ -29,7 +29,7 @@ stories:
       - intent: affirm
       - slot_was_set:
           - service: video
-      - action: action_customize_video_service
+      - action: video_service_params_form
       - active_loop: video_service_params_form
 
   # This is the case where the user don't want to customize the service
