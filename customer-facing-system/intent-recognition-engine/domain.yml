@@ -26,12 +26,12 @@ responses:
   utter_ask_resolution:
     - text: "What is the required video resolution you want?"
       buttons:
-        - title: "low (640x480)"
-          payload: '/inform_resolution{{"resolution": 640x480}}'
-        - title: "medium (1280x720)"
-          payload: '/inform_resolution{{"resolution": 1280x720}}'
-        - title: "high (1920x1080)"
-          payload: '/inform_resolution{{"resolution": 1920x1080}}'
+        - title: "Low (640x480)"
+          payload: '/inform_resolution{{"resolution": "640x480"}}'
+        - title: "Medium (1280x720)"
+          payload: '/inform_resolution{{"resolution": "1280x720"}}'
+        - title: "High (1920x1080)"
+          payload: '/inform_resolution{{"resolution": "1920x1080"}}'
 
   utter_dont_understand:
     - text: "I don't understand what you want."
