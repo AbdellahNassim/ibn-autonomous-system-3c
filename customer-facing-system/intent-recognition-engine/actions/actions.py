@@ -23,11 +23,18 @@ class ActionProcessIntent(Action):
         logger = setup_logger()
         logger.info("Received Action to process intent")
         # get values from the tracker
+        latency_value = tracker.get_slot('latency')
+        resolution_value = tracker.get_slot('resolution')
+        # if the values are none we set the default values 
+        if (latency_value is None) and (resolution_value is None):
+            latency_value = '20'
+            resolution_value = '1920x1080'
         user_intent = {
             "service_type":tracker.get_slot('service'),
-            "latency":tracker.get_slot('latency'),
-            "resolution":tracker.get_slot('resolution'),
+            "latency": latency_value,
+            "resolution":resolution_value,
         }
+        logger.info(user_intent)
         # send the extracted entities to the intent owner 
         try:
             send_entities(logger, user_intent)
@@ -38,25 +45,6 @@ class ActionProcessIntent(Action):
             dispatcher.utter_message(text="We are sorry an error has occured")
         
         return []
-class ActionCustomizeVideoService(Action):
-    """
-        This class is an action that just clean up the slots reserved for the 
-        video service parameters
-    """
-    
-    def name(self) -> Text:
-        return "action_customize_video_service"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        # Once the user wants to customize it's service we need to 
-        # reinitialize all the default values 
-        # Launch the form 
-        start_form = FollowupAction("video_service_params_form")
-        return [SlotSet("latency",None ),
-                SlotSet("resolution",None) ,
-                start_form ]
 
 # This class will ensure the validation of video service parameters
 class ValidateRestaurantForm(FormValidationAction):
@@ -64,7 +52,7 @@ class ValidateRestaurantForm(FormValidationAction):
         return "validate_video_service_params_form"
 
     # Validate latency 
-    def validate_resolution(
+    def validate_latency(
         self,
         slot_value: Any,
         dispatcher: CollectingDispatcher,

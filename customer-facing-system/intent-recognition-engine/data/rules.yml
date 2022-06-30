@@ -16,7 +16,7 @@ rules:
       - intent: out_of_scope
       - action: utter_dont_understand
 
-  # This rule will just desactivate the form and verify that all slots are filled in
+  # This is when the form is desactivated
   - rule: Submit video service form
     condition:
       - active_loop: video_service_params_form

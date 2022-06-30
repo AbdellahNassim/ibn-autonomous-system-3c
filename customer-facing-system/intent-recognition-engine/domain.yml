@@ -18,7 +18,7 @@ responses:
     - text: "What type of service you want ?"
 
   utter_confirm_service:
-    - text: "You have requested a {service} Service, it ensure {latency}ms latency and a resolution of {resolution}, do you want to customize it ?"
+    - text: "You have requested a {service} Service, it ensure 20ms latency and a resolution of 1920x1080, do you want to customize it ?"
 
   utter_ask_latency:
     - text: "What is the minimum amount of latency you want? (ms)"
@@ -63,7 +63,6 @@ slots:
   # Latency is one of the qos parameters of the service
   latency:
     type: float
-    initial_value: 20
     min_value: 0.0
     max_value: 1000.0
     mappings:
@@ -72,7 +71,6 @@ slots:
   # Resolution is one of the qos parameters of the video service
   resolution:
     type: categorical
-    initial_value: 1920x1080
     values:
       - 640x480
       - 1280x720
@@ -90,7 +88,6 @@ forms:
 
 # Here are the custom actions that will be executed
 actions:
-  - action_customize_video_service
   - validate_video_service_params_form
   - action_process_intent
   - utter_confirm_service
