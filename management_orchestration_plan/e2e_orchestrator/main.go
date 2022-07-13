@@ -1,18 +1,32 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/goccy/go-json"
+	"github.com/joho/godotenv"
 	"github.com/prometheus/prometheus/prompb"
 	log "github.com/sirupsen/logrus"
 )
 
 
 func main() {
+
+	// check if we are using the debug environment 
+	// because generally in production environment we don't use env files 
+	if os.Getenv("DEBUG")!="0" {
+		// loading environment variables from .env 
+		godotenv.Load()
+	}
+
+	if _, err := checkEnvVariables(); err != nil{
+		return 
+	}
 
 	// creating the router 
 	router := gin.Default()
@@ -92,6 +106,18 @@ func main() {
 	}
 }
 
+// check that environment variables were set 
+func checkEnvVariables()(any, error){
+	if os.Getenv("DATA_MANAGEMENT_HOST") ==""{
+		log.Error("DATA_MANAGEMENT_HOST env variable was not set ")
+		return nil, errors.New("environment variable not set ")
+	}
+	return nil, nil
+}
+
+
+
+
 /**
 	TimeSerieMetric represents a structure of the received metric from prometheus
 	It is used in order to aggregate and filter the metrics.
@@ -144,7 +170,33 @@ func AggregateTimeSeries(timeSerieLabels []prompb.Label, timeSerieSample prompb.
 			Namespace: namespace,
 			PodName : podName,
 		}
-		fmt.Println(timeSerieMetric)
+		// stream data to the intent based control plan 
+		SendTelemetryData(timeSerieMetric)
 	}
-	
+}
+
+
+/**
+	Calls the Data Management socket and send the telemetry data 
+**/
+func SendTelemetryData(telemetryMetric TimeSerieMetric){
+	// get env variables 
+	dataManagementHost := os.Getenv("DATA_MANAGEMENT_HOST")
+	dataManagementPort := os.Getenv("DATA_MANAGEMENT_PORT")
+	// connect to the socket 
+	con, err := net.Dial("tcp", dataManagementHost+":"+dataManagementPort)
+	if err != nil {
+		log.Fatal("An error has occured while trying to connect to "+ dataManagementHost+":"+ dataManagementPort)
+		log.Fatal(err)
+	}
+	// close connection as last step 
+	defer con.Close()
+	// encode the data as json 
+	timeSerieJson, err := json.Marshal(telemetryMetric)
+	if err != nil{
+		log.Fatal("An error has occured while encoding json telemetry data")
+		log.Fatal(err)
+	}
+	// send data to the socket 
+	con.Write(timeSerieJson)
 }
