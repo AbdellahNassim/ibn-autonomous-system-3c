@@ -1,8 +1,9 @@
 import asyncio
 import os
-from utils import setup_logger
+import json
+from data_preprocessor import preprocess_data
 
-logger = setup_logger()
+logger = None
 
 
 async def handle_data(reader, writer):
@@ -14,7 +15,10 @@ async def handle_data(reader, writer):
     data = await reader.read()
     # decode from byte to string
     time_serie_metric = data.decode()
-    print(time_serie_metric)
+    # decode the time serie from json
+    time_serie_metric = json.loads(time_serie_metric)
+    # send data to pre processor
+    preprocess_data(time_serie_metric)
 
 
 async def main():
@@ -33,4 +37,11 @@ async def main():
         logger.info("Server started successfully")
 
 
-asyncio.run(main())
+def start_collector(log):
+    """
+        Start the data collector service
+    """
+    # initialze the logger
+    global logger
+    logger = log
+    asyncio.run(main())
