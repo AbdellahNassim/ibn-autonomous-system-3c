@@ -144,7 +144,6 @@ func AggregateTimeSeries(timeSerieLabels []prompb.Label, timeSerieSample prompb.
 	var namespace string = ""
 	// the pod name of the collected metric
 	var podName string = ""
-
 	// basically here we loop on the labels of the time serie to filer out some metrics 
 	for _, label := range timeSerieLabels {		
 		if (label.Name =="namespace"){
@@ -156,6 +155,11 @@ func AggregateTimeSeries(timeSerieLabels []prompb.Label, timeSerieSample prompb.
 		}
 		if (label.Name == "__name__"){
 			metricName = label.Value
+		}
+		if (label.Name =="resource"){
+			// if the label is about kubernetes request|limit then we should split 
+			// based on if it is a cpu or memory request|limit
+			metricName = metricName + "_"+label.Value
 		}
 		if (label.Name == "pod"){
 			podName = label.Value
@@ -186,16 +190,16 @@ func SendTelemetryData(telemetryMetric TimeSerieMetric){
 	// connect to the socket 
 	con, err := net.Dial("tcp", dataManagementHost+":"+dataManagementPort)
 	if err != nil {
-		log.Fatal("An error has occured while trying to connect to "+ dataManagementHost+":"+ dataManagementPort)
-		log.Fatal(err)
+		log.Error("An error has occured while trying to connect to "+ dataManagementHost+":"+ dataManagementPort)
+		log.Error(err)
 	}
 	// close connection as last step 
 	defer con.Close()
 	// encode the data as json 
 	timeSerieJson, err := json.Marshal(telemetryMetric)
 	if err != nil{
-		log.Fatal("An error has occured while encoding json telemetry data")
-		log.Fatal(err)
+		log.Error("An error has occured while encoding json telemetry data")
+		log.Error(err)
 	}
 	// send data to the socket 
 	con.Write(timeSerieJson)

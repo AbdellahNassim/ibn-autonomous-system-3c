@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/prometheus/prometheus/prompb"
 	"github.com/prometheus/prometheus/storage/remote"
@@ -54,7 +55,8 @@ func StartMetricsServer()(error){
 			for _, s := range ts.Samples {
 				sample = &s
 			}
-
+			// sleep 20 milis
+			time.Sleep(20 * time.Millisecond)
 			// send metric to the e2e orchestrator 
 			AggregateTimeSeries(labels,*sample)
 		}
