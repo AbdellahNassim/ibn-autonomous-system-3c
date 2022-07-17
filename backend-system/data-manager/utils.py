@@ -49,9 +49,12 @@ def check_env_variables():
     """
         Check if the required env variables were specified or not 
     """
-    if "DATA_MANAGEMENT_PORT" not in os.environ:
+    if "DATA_MANAGER_MANO_PORT" not in os.environ:
         raise Exception(
-            "Environment Variable not specified $DATA_MANAGEMENT_PORT")
+            "Environment Variable not specified $DATA_MANAGER_MANO_PORT")
+    if "DATA_MANAGER_INTERNAL_PORT" not in os.environ:
+        raise Exception(
+            "Environment Variable not specified $DATA_MANAGER_INTERNAL_PORT")
     if "INFLUX_DB_HOST" not in os.environ:
         raise Exception(
             "Environment Variable not specified $INFLUX_DB_HOST")

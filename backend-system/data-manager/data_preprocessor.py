@@ -99,15 +99,11 @@ def preprocess_data(metric):
     # filter metrics that are related to kube-system or prometheus namespace
     if (metric['Namespace'] != "prometheus") and (metric['Namespace'] != "kube-system"):
         measurement_name, field_name, field_value = standardize_metrics(metric)
-        # convert timestamp
-        # pass timestamp without millis
-        measurement_timestamp = datetime.fromtimestamp(
-            metric['TimeStamp'] // 1000)
         # create a point which is a data
         # specify the tags and fields
         p = Point(measurement_name).tag("namespace", metric['Namespace']).tag(
             "pod", metric["PodName"]).field(field_name,
-                                            float(field_value)).time(measurement_timestamp)
+                                            float(field_value)).time(metric['TimeStamp'], write_precision="ms")
         write_api = db_client.write_api(write_options=SYNCHRONOUS)
         bucket = os.environ['INFLUX_DB_BUCKET']
         # write data to bucket

@@ -14,11 +14,11 @@ async def handle_data(reader, writer):
     # read data from the network
     data = await reader.read()
     # decode from byte to string
-    time_serie_metric = data.decode()
+    time_serie_metrics = data.decode()
     # decode the time serie from json
-    time_serie_metric = json.loads(time_serie_metric)
+    time_serie_metrics = json.loads(time_serie_metrics)
     # send data to pre processor
-    preprocess_data(time_serie_metric)
+    preprocess_data(time_serie_metrics)
 
 
 async def main():

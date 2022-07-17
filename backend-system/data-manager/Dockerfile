@@ -21,9 +21,15 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
+
 # setting env variable of the port 
-ENV DATA_MANAGEMENT_PORT=6001
+ENV DATA_MANAGER_MANO_PORT=6001
 
 EXPOSE 6001
 
-ENTRYPOINT ["python3",  "app.py"]
+# setting env variable of the port 
+ENV DATA_MANAGER_INTERNAL_PORT=80
+
+EXPOSE 80
+
+ENTRYPOINT ["python3",  "main.py"]
