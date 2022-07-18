@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 import os
-from utils import create_connection, check_env_variables
+from utils import create_connection, check_env_variables, setup_logger
 
+# setup logger
+logger = setup_logger()
 
 app = Flask(__name__)
 
