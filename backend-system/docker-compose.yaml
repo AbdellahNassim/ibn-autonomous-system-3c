@@ -30,6 +30,7 @@ services:
       - DATABASE_HOST=knowledge_base_db
       # Knowledge base ml marketplace
       - ML_MARKET_PLACE_HOST=http://ml_marketplace
+      - KNOWLEDGE_DB_URL=http://intent_tracker:7200
     networks:
       - internal_network
 
@@ -69,7 +70,7 @@ services:
 
   ml_marketplace:
     build:
-      context: ./knowledge-base/ml_marketplace
+      context: ./ml_marketplace
     container_name: backend-ml-marketplace
     restart: always
     networks:
@@ -86,10 +87,70 @@ services:
       - default
       - internal_network
 
+  data_manager:
+    build:
+      context: ./data-manager
+    container_name: backend-data-manager
+    restart: always
+    ports:
+      - "6001:6001"
+    networks:
+      - default
+      - internal_network
+      - data_manager_network
+    environment:
+      - INFLUX_DB_HOST=data_store
+      - INFLUX_DB_PORT=8086
+      - INFLUX_DB_ORG=scoring
+      - INFLUX_DB_BUCKET=data-store
+      - INFLUX_DB_TOKEN=bQsh6k7qAbhdX64ErcURpkWXXjahtQs3U4fU4jwUp4oOlqlnTtPiup847TKnp5M98BWUZMxyJM0P2heTsfo0FQ==
+
+  data_store:
+    build:
+      context: ./data-manager/data-store
+    container_name: data_manager_data_store
+    volumes:
+      - data_store:/var/lib/influxdb2
+      - data_store_config:/etc/influxdb2
+    ports:
+      - "8086:8086"
+    networks:
+      - data_manager_network
+      - default
+  data_store_init:
+    links:
+      - data_store
+    build:
+      context: ./data-manager/data-store
+      dockerfile: Init.Dockerfile
+    volumes:
+      # Mount for influxdb data directory and configuration
+      - data_store:/var/lib/influxdb2
+      - data_store_config:/etc/influxdb2
+    restart: on-failure:10
+    networks:
+      - data_manager_network
+    depends_on:
+      - data_store
+
+  intent_monitor:
+    build:
+      context: ./intent-monitor
+    container_name: backend-intent-monitor
+    environment:
+      - INTENT_MANAGER_URL=http://intent_manager
+      - DATA_MANAGER_URL=http://data_manager
+    restart: always
+    networks:
+      - internal_network
+
 volumes:
   pg_data:
   graphdb_data:
+  data_store:
+  data_store_config:
 networks:
+  data_manager_network:
   internal_network:
   default:
     driver: bridge

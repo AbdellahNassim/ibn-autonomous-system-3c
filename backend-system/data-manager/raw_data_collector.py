@@ -30,7 +30,6 @@ async def main():
     # create a simple server
     server = await asyncio.start_server(handle_data, '0.0.0.0', port)
     logger.info('Serving on  0.0.0.0:6001')
-
     # start the server
     async with server:
         await server.serve_forever()
