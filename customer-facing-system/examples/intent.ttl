@@ -1,0 +1,26 @@
+@prefix cat: <https://chistera-scoring.github.io/services-catalog/> .
+@prefix icm: <https://www.tmforum.org/2020/07/IntentCommonModel/> .
+@prefix sc: <https://socring-ibn.univ-lr.fr/> .
+@prefix vid: <https://360videoProvider/model/> .
+
+sc:intent-b700fd67 a icm:Intent ;
+    icm:hasExpectation sc:service_delivery_expectation,
+        sc:service_property_expectation .
+
+sc:service_delivery_expectation a icm:DeliveryExpectation ;
+    icm:params sc:service_type_param ;
+    icm:target "service" .
+
+sc:service_latency_param a icm:PropertyParam ;
+    vid:latency [ icm:exactly "20" ] .
+
+sc:service_property_expectation a icm:PropertyExpectation ;
+    icm:params sc:service_latency_param,
+        sc:service_resolution_param ;
+    icm:target "service" .
+
+sc:service_resolution_param a icm:PropertyParam ;
+    vid:resolution [ icm:exactly "1920x1080" ] .
+
+sc:service_type_param a icm:DeliveryParam ;
+    icm:targetDescription cat:video .

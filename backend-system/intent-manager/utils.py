@@ -18,8 +18,8 @@ def setup_logger():
     # set logger name
     log = logging.getLogger("Intent Manager")
     # Check if we are in debug mode
-    
-    isDebug = ("DEBUG" in os.environ) and  bool(os.environ["DEBUG"])
+
+    isDebug = ("DEBUG" in os.environ) and bool(os.environ["DEBUG"])
     # by default ignore debug logs
     logging_level = logging.WARNING
     if isDebug:
@@ -27,14 +27,19 @@ def setup_logger():
     log.setLevel(logging_level)
     return log
 
+
 def check_env_variables():
     """
         Check if the required env variables were specified or not 
     """
     if "DECISION_MAKER_INSTANCES" not in os.environ:
-        raise Exception("Environment Variable not specified $DECISION_MAKER_INSTANCES")
+        raise Exception(
+            "Environment Variable not specified $DECISION_MAKER_INSTANCES")
     if "ML_MARKET_PLACE_HOST" not in os.environ:
-        raise Exception("Environment Variable not specified $ML_MARKET_PLACE_HOST")
+        raise Exception(
+            "Environment Variable not specified $ML_MARKET_PLACE_HOST")
+    if "KNOWLEDGE_DB_URL" not in os.environ:
+        raise Exception("Environment Variable not specified $KNOWLEDGE_DB_URL")
 
 
 def map_resolution(resolution):
@@ -42,7 +47,7 @@ def map_resolution(resolution):
         Mapping resolution to an integer format 
         TODO This should be replaced.
     """
-    if resolution =="640x480":
+    if resolution == "640x480":
         return 1
     else:
         return 0
