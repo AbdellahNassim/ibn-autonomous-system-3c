@@ -30,11 +30,11 @@ services:
       - DATABASE_HOST=knowledge_base_db
       # Knowledge base ml marketplace
       - ML_MARKET_PLACE_HOST=http://ml_marketplace
-      - KNOWLEDGE_DB_URL=http://intent_tracker:7200
+      - KNOWLEDGE_DB_URL=http://intent-tracker:7200
     networks:
       - internal_network
 
-  intent_tracker:
+  intent-tracker:
     build:
       context: ./knowledge-base/intent-tracker
     environment:
