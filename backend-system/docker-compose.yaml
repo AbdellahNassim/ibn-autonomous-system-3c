@@ -33,6 +33,30 @@ services:
     networks:
       - internal_network
 
+  intent_tracker:
+    build:
+      context: ./knowledge-base/intent-tracker
+    environment:
+      GDB_JAVA_OPTS: >-
+        -Xmx2g -Xms2g
+        -Dgraphdb.home=/opt/graphdb/home
+        -Dgraphdb.workbench.importDirectory=/opt/graphdb/home/graphdb-import
+        -Dgraphdb.workbench.cors.enable=true
+        -Denable-context-index=true
+        -Dentity-pool-implementation=transactional
+        -Dhealth.max.query.time.seconds=60
+        -Dgraphdb.append.request.id.headers=true
+        -Dreuse.vars.in.subselects=true
+    ports:
+      - 7200:7200
+      - 7300:7300
+    networks:
+      - internal_network
+      - default
+    restart: unless-stopped
+    volumes:
+      - graphdb_data:/opt/graphdb/home
+
   knowledge_base_db:
     build:
       context: ./knowledge-base
@@ -64,6 +88,7 @@ services:
 
 volumes:
   pg_data:
+  graphdb_data:
 networks:
   internal_network:
   default:
