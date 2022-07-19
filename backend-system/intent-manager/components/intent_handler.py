@@ -60,6 +60,7 @@ def save_intent_graphdb(logger, intent_graph):
     response = requests.get(graphdb_url + '/rest/repositories')
     if response.status_code != 200:
         logger.error('Error accessing the intent tracker db')
+        logger.error(response.content)
         return
     if len(response.json()) == 0:
         # files
@@ -69,6 +70,7 @@ def save_intent_graphdb(logger, intent_graph):
         # create a new repository
         response = requests.post(graphdb_url+'/rest/repositories', files=files)
         if response.status_code != 201:
+            logger.error(response.content)
             logger.error('Error creating repository in the intent tracker db')
             return
     # send the intent to the knowledge graph
@@ -79,4 +81,5 @@ def save_intent_graphdb(logger, intent_graph):
         graphdb_url+'/repositories/intent-tracker/statements', headers=headers, data=intent_graph.encode())
     if response.status_code != 204:
         logger.error('Error sending intent to the intent tracker db')
+        logger.error(resp.content)
         return
