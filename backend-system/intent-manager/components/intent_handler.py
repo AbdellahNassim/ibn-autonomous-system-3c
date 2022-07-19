@@ -4,6 +4,7 @@ from database.utils import create_session
 from database.models import IntentTracker, IntentStatus
 from components.intent_scheduler import schedule_processing
 import os
+import sys
 import requests
 
 
@@ -58,14 +59,16 @@ def save_intent_graphdb(logger, intent_graph):
     graphdb_url = os.environ['KNOWLEDGE_DB_URL']
     # check if repository is created
     response = requests.get(graphdb_url + '/rest/repositories')
+    print(response.content)
     if response.status_code != 200:
         logger.error('Error accessing the intent tracker db')
         logger.error(response.content)
         return
     if len(response.json()) == 0:
+        config_file = os.path.join(sys.path[0], "components/repo-config.ttl")
         # files
         files = {
-            'config': open('repo-config.ttl', 'rb'),
+            'config': open(config_file, 'rb'),
         }
         # create a new repository
         response = requests.post(graphdb_url+'/rest/repositories', files=files)
@@ -78,7 +81,8 @@ def save_intent_graphdb(logger, intent_graph):
         "Content-Type": "application/x-turtle"
     }
     resp = requests.post(
-        graphdb_url+'/repositories/intent-tracker/statements', headers=headers, data=intent_graph.encode())
+        graphdb_url+'/repositories/intent-tracker/statements', headers=headers, data=intent_graph.serialize(
+            format="turtle").encode())
     if response.status_code != 204:
         logger.error('Error sending intent to the intent tracker db')
         logger.error(resp.content)
