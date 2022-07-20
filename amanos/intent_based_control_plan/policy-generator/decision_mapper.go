@@ -1,6 +1,8 @@
 package main
 
 import (
+	"math/rand"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	log "github.com/sirupsen/logrus"
@@ -82,13 +84,14 @@ func HandleDecision(decision *Decision, c *gin.Context) (any, error){
 }
 
 func HandleServiceDeploy(decision *ServiceDeploymentDecision) (any, error){
+	subnetNumber := string(rand.Intn(256)) 
 	log.Info("Mapping the received decision into configuration object")
 	// mapping the decision into a configuration object to be processed 
 	deploymentConfiguration := ServiceDeploymentConfiguration{
 		IntentId: decision.IntentId, 
 		Namespace: decision.IntentId,
-		NetworkSubnetCidr: "10.10.0.0/16",
-		NetworkGatewayIp: "10.10.0.1",
+		NetworkSubnetCidr: "10."+subnetNumber+ ".0.0/16",
+		NetworkGatewayIp: "10."+subnetNumber+".0.1",
 		NetworkIngressRate: decision.Params.Resources.Network,
 		NetworkEgressRate: decision.Params.Resources.Network,
 		ApplicationName: decision.IntentId + "-" + decision.Params.Service.Name,
