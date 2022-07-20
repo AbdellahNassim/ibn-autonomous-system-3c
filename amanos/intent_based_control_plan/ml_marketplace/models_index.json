@@ -4,7 +4,7 @@
     "available_models": [
       {
         "id": "video-resources-prediction",
-        "input": ["latency", "resolution"],
+        "input": ["throughput", "latency"],
         "output": ["cpu", "memory", "storage", "network"],
         "is_trained": true,
         "format": "h5",

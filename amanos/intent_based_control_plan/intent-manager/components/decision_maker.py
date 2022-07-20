@@ -66,13 +66,9 @@ def fetch_model_marketplace(logger, intent):
         return @model file  the ML model
     """
     # search for appropriate model first
-    # mapping service params to model inputs
-    model_inputs = []
-    for param, value in intent["service_params"].items():
-        model_inputs.append(param)
     data = {
         "service": intent['service_type'],
-        "input": model_inputs,
+        "input": ["throughput", "latency"],
         "output": ['cpu', 'memory', 'network', 'storage'],
         "is_trained": True,
         "format": "h5"
@@ -121,10 +117,7 @@ def execute_model_intent_params(logger, model, intent):
     model_input = []
     logger.info("Executing model to make predictions on the needed resources")
     for param, value in intent["service_params"].items():
-        try:
-            model_input.append(int(value))
-        except:
-            model_input.append(map_resolution(value))
+        model_input.append(int(value))
     # map it to a numpy array
     model_input = np.asarray([model_input])
     # make predictions
