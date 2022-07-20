@@ -16,11 +16,12 @@ def setup_logger():
     # This will load environment variables from the .env
     load_dotenv()
     # Now we can access those variables like any environment variable
-    # configure the logging format 
-    logging.basicConfig(format="[%(levelname)s] - %(asctime)s - %(name)s - : %(message)s in %(pathname)s")
-    # set logger name 
+    # configure the logging format
+    logging.basicConfig(
+        format="[%(levelname)s] - %(asctime)s - %(name)s - : %(message)s ")
+    # set logger name
     log = logging.getLogger("Customer Authenticator")
-    # Check if we are in debug mode 
+    # Check if we are in debug mode
     isDebug = bool(os.environ["DEBUG"])
     # by default ignore debug logs
     logging_level = logging.WARNING
@@ -30,15 +31,17 @@ def setup_logger():
     return log
 
 
-
 def check_user(logger, db, username, enc_password):
     """
         Checking if a user exists in the database with the specified username and password 
     """
-    user = db.query(User).filter(User.username==username , User.password==enc_password).first()
-    if user ==None:
-        logger.info("Couldn't find user with the specified creds {} {}".format(username, enc_password))
-        raise Exception("Couldn't find any user with the provided credentials ")
+    user = db.query(User).filter(User.username == username,
+                                 User.password == enc_password).first()
+    if user == None:
+        logger.info("Couldn't find user with the specified creds {} {}".format(
+            username, enc_password))
+        raise Exception(
+            "Couldn't find any user with the provided credentials ")
     return user
 
 
@@ -47,15 +50,15 @@ def encode_jwt(logger, username, enc_password):
         Creating a jwt token based on the username and the encrypted password
     """
     payload = {
-        "username": username, 
-        "password": enc_password, 
+        "username": username,
+        "password": enc_password,
         "delivery_time": time.time()
     }
-    # get the jwt secret 
+    # get the jwt secret
     if 'JWT_SECRET' not in os.environ:
         logger.info("environment variable 'JWT_SECRET' not specified")
         raise Exception("An error occured")
     jwt_secret = os.environ["JWT_SECRET"]
-    # create a new jwt token 
-    token  = jwt.encode(payload, jwt_secret, algorithm="HS256")
+    # create a new jwt token
+    token = jwt.encode(payload, jwt_secret, algorithm="HS256")
     return token

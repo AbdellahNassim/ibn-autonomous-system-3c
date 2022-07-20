@@ -7,6 +7,7 @@ intents:
   - greet
   - inform_latency
   - inform_resolution
+  - inform_throughput
   - out_of_scope
   - request_service
 
@@ -18,10 +19,13 @@ responses:
     - text: "What type of service you want ?"
 
   utter_confirm_service:
-    - text: "You have requested a {service} Service, it ensure 20ms latency and a resolution of 1920x1080, do you want to customize it ?"
+    - text: "You have requested a {service} Service, it ensure: \n- 20ms latency \n- resolution of 1920x1080 \n- throughput of 10Mb/s \n do you want to customize it ?"
 
   utter_ask_latency:
     - text: "What is the minimum amount of latency you want? (ms)"
+
+  utter_ask_throughput:
+    - text: "What is the minimum amount of throughput you want? (Mb/s)"
 
   utter_ask_resolution:
     - text: "What is the required video resolution you want?"
@@ -49,6 +53,7 @@ responses:
 entities:
   - latency
   - resolution
+  - throughput
   - service_type
 
 slots:
@@ -68,6 +73,14 @@ slots:
     mappings:
       - type: from_entity
         entity: latency
+  # Latency is one of the qos parameters of the service
+  throughput:
+    type: float
+    min_value: 0.0
+    max_value: 1000.0
+    mappings:
+      - type: from_entity
+        entity: throughput
   # Resolution is one of the qos parameters of the video service
   resolution:
     type: categorical
@@ -85,6 +98,7 @@ forms:
     required_slots:
       - latency
       - resolution
+      - throughput
 
 # Here are the custom actions that will be executed
 actions:

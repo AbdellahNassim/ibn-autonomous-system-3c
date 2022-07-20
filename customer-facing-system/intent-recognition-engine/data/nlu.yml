@@ -156,6 +156,10 @@ nlu:
       - I want to [watch]{"entity": "service_type", "value": "video"} something
       - I want to watch a [video](service_type)
       - I want to play a [game]{"entity": "service_type", "value": "gaming"}
+      - I want a [360 video]{"entity":"service_type", "value":"video"} service
+      - I want to request a [360 video]{"entity":"service_type", "value":"video"} service
+      - I want to provision a [360 video]{"entity":"service_type", "value":"video"} service
+      - Request [360 video]{"entity":"service_type", "value":"video"} service
   - intent: inform_latency
     examples: |
       - I want [20](latency) ms of latency
@@ -176,6 +180,19 @@ nlu:
       - [640x480](resolution)
       - [1280x720](resolution)
       - [1920x1080](resolution)
+
+  - intent: inform_throughput
+    examples: |
+      - I want [20](throughput) Mb/s of throughput
+      - I want [10](throughput) Mb/s of throughput
+      - I need [10](throughput) Mb/s
+      - I need [20](throughput) Mb/s
+      - Just [20](throughput) Mb/s
+      - Just [10](throughput) Mb/s
+      - [20](throughput)
+      - [10](throughput)
+      - [20](throughput) Mb/s
+      - [10](throughput) Mb/s
 
   # Adding synonymes here
   - synonym: video

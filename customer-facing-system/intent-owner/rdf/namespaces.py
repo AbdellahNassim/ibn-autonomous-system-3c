@@ -11,7 +11,7 @@ class ICM(DefinedNamespace):
 
     _fail = True
 
-    # Classes 
+    # Classes
     Intent: URIRef
     Expectation: URIRef
     DeliveryExpectation: URIRef
@@ -38,9 +38,9 @@ class ICM(DefinedNamespace):
     IntentReport: URIRef
     ReportingParam: URIRef
     ReportingExpectationReport: URIRef
-    
+
     ReportingExpectation: URIRef
-    DeliveryExpectationReport:URIRef
+    DeliveryExpectationReport: URIRef
     ExpectationReport: URIRef
     ExpectationReportParam: URIRef
     ExpectationTarget: URIRef
@@ -53,11 +53,8 @@ class ICM(DefinedNamespace):
     IntentManagmentProcedure: URIRef
     IntentHandlingState: URIRef
     RejectionReason: URIRef
-    
 
-
-
-    # Properties 
+    # Properties
     atLeast: URIRef
     atMost: URIRef
     exactly: URIRef
@@ -91,8 +88,8 @@ class ICM(DefinedNamespace):
     targetDescription: URIRef
     targetReport: URIRef
     targetType: URIRef
-    
-    # I supposed the model will be available here 
+
+    # I supposed the model will be available here
     _NS = Namespace("https://www.tmforum.org/2020/07/IntentCommonModel/")
 
 
@@ -104,13 +101,13 @@ class Catalog(DefinedNamespace):
 
     _fail = True
 
-    # individuals 
+    # individuals
     video: URIRef
-    
+
     _NS = Namespace("https://chistera-scoring.github.io/services-catalog/")
 
 
-class VideoService(DefinedNamespace):
+class TelecomMetrics(DefinedNamespace):
     """
         Example of a video service model 
         Date: 2022-05-18
@@ -118,7 +115,21 @@ class VideoService(DefinedNamespace):
     _fail = True
 
     latency: URIRef
-    resolution: URIRef
+    throughput: URIRef
 
-    # I supposed the model will be available here 
-    _NS = Namespace("https://360videoProvider/model/")
+    # I supposed the model will be available here
+    _NS = Namespace("http://www.sdo.org/TelecomMetrics/Version_1.0")
+
+
+class NetworkSliceModel(DefinedNamespace):
+    """
+        Example of a video service model 
+        Date: 2022-05-18
+    """
+    _fail = True
+
+    core5g: URIRef
+    ran: URIRef
+
+    _NS = Namespace(
+        "https://raw.githubusercontent.com/Orange-OpenSource/towards5gs-helm/main/repo/")
