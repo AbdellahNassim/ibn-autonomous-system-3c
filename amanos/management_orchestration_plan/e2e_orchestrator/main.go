@@ -90,11 +90,9 @@ func main() {
 		}
 	})
 
-	// start the application orchestrator metrics collection server
-	err = StartMetricsServer()
-	if err != nil {
-		panic(err)
-	}
+	// set the route to receive metrics from the application orchestrator
+	router.POST("/receive",  HandleMetrics)
+
 
 
 	if os.Getenv("E2E_ORCHESTRATOR_PORT")!="" {

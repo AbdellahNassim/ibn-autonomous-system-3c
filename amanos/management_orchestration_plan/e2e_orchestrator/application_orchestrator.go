@@ -1,11 +1,11 @@
 package main
 
 import (
-	"net/http"
 	"os"
 	"os/exec"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/prometheus/prometheus/prompb"
 	"github.com/prometheus/prometheus/storage/remote"
 	log "github.com/sirupsen/logrus"
@@ -27,48 +27,34 @@ type HelmApplication struct{
 
 
 
-// start the remote write server
 // this server will receive chuncks of metrics from prometheus
-func StartMetricsServer()(error){
-	// creating a simple route to receive metrics
-	http.HandleFunc("/receive", func(w http.ResponseWriter, r *http.Request) {
-		// create a simple variable with writeRequest protobuf
-		req, err := remote.DecodeWriteRequest(r.Body)
-		// if decoding is error we return and print error
-		if err != nil {
-			log.Fatal("An error occured whilde decoding request")
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		log.Debug("A write request was received from prometheus")
-		// once the write request is decoded we will try to filter data 
-		// loop over the time series data 
-		for _, ts := range req.Timeseries {
-			// for each time serie
-
-			// collect the labels of the metric 
-			labels := ts.Labels
-			// a sample is the timestamp and value of the metric
-			var sample *prompb.Sample = nil
-
-			// collect the value of the metric and the timestamp	
-			for _, s := range ts.Samples {
-				sample = &s
-			}
-			// sleep 20 milis
-			time.Sleep(20 * time.Millisecond)
-			// send metric to the e2e orchestrator 
-			AggregateTimeSeries(labels,*sample)
-		}
-	})
-
-	// start the server
-	err := http.ListenAndServe(":8003", nil)
+func HandleMetrics(c *gin.Context){
+	// create a simple variable with writeRequest protobuf
+	req, err := remote.DecodeWriteRequest(c.Request.Body)
+	// if decoding is error we return and print error
 	if err != nil {
-		log.Fatal("An error occured while launching the application's metrics collector")
-		return err
+		log.Fatal("An error occured whilde decoding request")
+		return 
 	}
-	return nil
+	log.Debug("A write request was received from prometheus")
+	// once the write request is decoded we will try to filter data 
+	// loop over the time series data 
+	for _, ts := range req.Timeseries {
+		// for each time serie
+		// collect the labels of the metric 
+		labels := ts.Labels
+		// a sample is the timestamp and value of the metric
+		var sample *prompb.Sample = nil
+		// collect the value of the metric and the timestamp	
+		for _, s := range ts.Samples {
+			sample = &s
+		}
+		// sleep 20 milis
+		time.Sleep(20 * time.Millisecond)
+		// send metric to the e2e orchestrator 
+		AggregateTimeSeries(labels,*sample)
+	}
+	
 }
 
 
