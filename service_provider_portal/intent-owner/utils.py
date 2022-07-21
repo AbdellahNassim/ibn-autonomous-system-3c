@@ -93,6 +93,7 @@ def send_intent_backend(logger, user_intent):
     backend_url = os.environ["BACKEND_URL"]
     # send intent to backend service
     logger.info("Sending standardized intent to backend "+backend_url)
+    logger.info(standard_intent)
     standard_intent = json.loads(standard_intent)
     response = requests.post(backend_url+"/services", json=standard_intent)
     if response.status_code != 200:

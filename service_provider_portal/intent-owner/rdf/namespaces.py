@@ -118,7 +118,7 @@ class TelecomMetrics(DefinedNamespace):
     throughput: URIRef
 
     # I supposed the model will be available here
-    _NS = Namespace("http://www.sdo.org/TelecomMetrics/Version_1.0")
+    _NS = Namespace("http://www.sdo.org/TelecomMetrics/Version_1.0/")
 
 
 class NetworkSliceModel(DefinedNamespace):
