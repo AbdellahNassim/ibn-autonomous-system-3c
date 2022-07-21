@@ -2,6 +2,7 @@ package main
 
 import (
 	"math/rand"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -84,7 +85,7 @@ func HandleDecision(decision *Decision, c *gin.Context) (any, error){
 }
 
 func HandleServiceDeploy(decision *ServiceDeploymentDecision) (any, error){
-	subnetNumber := string(rand.Intn(256)) 
+	subnetNumber := strconv.Itoa(rand.Intn(256))
 	log.Info("Mapping the received decision into configuration object")
 	// mapping the decision into a configuration object to be processed 
 	deploymentConfiguration := ServiceDeploymentConfiguration{
