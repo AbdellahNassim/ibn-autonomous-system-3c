@@ -1,0 +1,91 @@
+version: "3.5"
+services:
+  intent-ingestion:
+    build: ./intent-ingestion
+    container_name: cfs-intent-ingestion
+    environment:
+      - REACT_APP_INTENT_RECOGNITION_HOST=localhost
+      - REACT_APP_CUSTOMER_AUTHENTICATOR=http://localhost:8000
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - external_network
+
+  intent-recognition:
+    build: ./intent-recognition-engine
+    container_name: cfs-intent-recognition
+    ports:
+      - "5005:5005"
+    networks:
+      - internal_network
+    restart: unless-stopped
+
+  intent-recognition-actions:
+    container_name: cfs-actions_server
+    build: ./intent-recognition-engine/actions/
+    environment:
+      - INTENT_OWNER_URL=http://intent_owner:8001
+    volumes:
+      - "./intent-recognition-engine/actions:/app/actions"
+    networks:
+      - internal_network
+    restart: unless-stopped
+
+  customer_authenticator:
+    container_name: cfs-customer_authenticator
+    build: ./customer-authenticator
+    environment:
+      - DEBUG=1
+      - CUSTOMER_AUTHENTICATOR_PORT=8000
+      - DATABASE_USER=postgres
+      - DATABASE_NAME=intent_store
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_HOST=intent_store
+    networks:
+      - internal_network
+      - external_network
+    depends_on:
+      - intent_store
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  intent_owner:
+    container_name: cfs-intent_owner
+    build: ./intent-owner
+    environment:
+      - DEBUG=1
+      - INTENT_OWNER_PORT=8001
+      - BACKEND_URL=http://192.168.121.2:8080
+
+      - DATABASE_USER=postgres
+      - DATABASE_NAME=intent_store
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_PORT=5432
+      - DATABASE_HOST=intent_store
+    depends_on:
+      - intent_store
+    networks:
+      - internal_network
+    restart: unless-stopped
+    ports:
+      - "8001:8001"
+  intent_store:
+    container_name: cfs-intent_store
+    build:
+      context: ./intent_store
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - internal_network
+    restart: unless-stopped
+
+networks:
+  internal_network:
+  external_network:
+    driver: bridge
+
+volumes:
+  postgres:
